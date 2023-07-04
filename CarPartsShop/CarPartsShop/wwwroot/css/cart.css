@@ -1,0 +1,25 @@
+﻿
+
+img{
+    max-width: 100px;
+    max-height: 100px;
+}
+a{
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+body {
+    background-color: #292828;
+}
+
+.card {
+    background-color: dimgrey;
+}
+
+.card-body, .table-responsive {
+    color: white;
+}
+.table-shopping-cart th {
+    color: #fff;
+}

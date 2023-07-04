@@ -1,0 +1,130 @@
+﻿@model OrderInformationForm
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/cart.css" />
+    <link rel="stylesheet" href="~/css/FormPages.css" />
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <aside class="col-lg-9">
+            <div class="card">
+                <div class="table-responsive">
+                    <table class="table table-borderless table-shopping-cart">
+                        <thead class="text-muted">
+                            <tr class="small text-uppercase">
+                                <th scope="col">Продукт</th>
+                                <th scope="col" width="120">Брой</th>
+                                <th scope="col" width="120">Ед. Цена</th>
+                                <th scope="col" class="text-right d-none d-md-block" width="200"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var product in Model.Cart.Parts)
+                            {
+                                <tr part-id="@product.Part.Id">
+                                    <td>
+                                        <figure class="itemside align-items-center">
+                                            <div class="aside"><img src="@String.Format("data:image/gif;base64,{0}", Convert.ToBase64String(product.Part.PartImages.First().Bytes))" alt="Image" class="img-sm"></div>
+                                            <figcaption class="info">
+                                                <p class="title text-light" data-abc="true">@product.Part.Name</p>
+                                                <div class="text-danger">
+                                                    @Html.ValidationMessage($"{product.PartId}")
+                                                </div>
+                                            </figcaption>
+                                        </figure>
+                                    </td>
+                                    <td>
+                                        <input type="number" part-id="@product.Part.Id" class="form-control count-el" value="@product.Count" />
+                                    </td>
+                                    <td>
+                                        <div class="price-wrap"> <var class="price text-light">@product.Part.PartPrice лв.</var></div>
+                                    </td>
+                                    <td class="text-right d-none d-md-block"><a asp-controller="Parts" asp-action="Details" asp-route-partId="@product.Part.Id" class="btn btn-success">Виж продукт</a><a part-id="@product.Part.Id" class="btn btn-danger remove-btn">Премахни</a></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </aside>
+        <aside class="col-lg-3">
+            <div class="card">
+                <div class="card-body">
+                    <dl class="dlist-align">
+                        <dt>Общо:</dt>
+                        <dd class="text-right text-light b ml-3"><strong id="total-price">@Model.Cart.Parts.Sum(x=> x.Part.PartPrice * x.Count) лв.</strong></dd>
+                    </dl>
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>
+
+
+<div class="row table-field">
+    <div class="col-md-4 mx-auto">
+        <h4 class="text-center text-light">Данни за поръчка</h4>
+        <hr />
+        <form id="order-form" method="post" asp-action="MakeOrder">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label">Име<span class="text-danger">*</span></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label">Фамилия<span class="text-danger">*</span></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="City" class="control-label">Населено място<span class="text-danger">*</span></label>
+                <input asp-for="City" class="form-control" />
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PostCode" class="control-label">Пощенски код<span class="text-danger">*</span></label>
+                <input asp-for="PostCode" class="form-control" />
+                <span asp-validation-for="PostCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label">Адрес за доставка<span class="text-danger">*</span></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label">Телефон<span class="text-danger">*</span></label>
+                <input asp-for="Phone" type="number" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <fieldset>
+                <legend class="text-light">Начин на плащане:</legend>
+
+                <div>
+                    <input type="radio" id="pay-later" asp-for="PayNow" name="PayNow" value="false"
+                           checked>
+                    <label for="pay-later" class="text-light">Наложен платеж</label>
+                </div>
+
+                <div>
+                    <input type="radio" id="pay-now" asp-for="PayNow" name="PayNow" value="true">
+                    <label for="pay-now" class="text-light">Карта</label>
+                </div>
+            </fieldset>
+            <div class="form-group text-center btn-containter">
+                <input type="submit" value="Купи" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/ChangeInput.js"></script>
+    <script src="~/js/OnLoad.js"></script>
+    <script src="~/js/EditCart.js"></script>
+    <script src="~/js/RemoveProductFromCart.js"></script>
+}

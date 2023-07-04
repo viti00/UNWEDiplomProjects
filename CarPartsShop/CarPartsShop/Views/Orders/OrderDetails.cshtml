@@ -1,0 +1,85 @@
+﻿@using static CarPartsShop.Infrastructure.RolesConstants;
+@model Order
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/cart.css" />
+    <link rel="stylesheet" href="~/css/OrderDetails.css" />
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <aside class="col-lg-9">
+            <div class="card">
+                <div class="table-responsive">
+                    <table class="table table-borderless table-shopping-cart">
+                        <thead class="text-muted">
+                            <tr class="small text-uppercase">
+                                <th scope="col">Продукт</th>
+                                <th scope="col" width="120">Брой</th>
+                                <th scope="col" width="120">Ед. Цена</th>
+                                <th scope="col" class="text-right d-none d-md-block" width="200"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var product in Model.Parts)
+                            {
+                                <tr part-id="@product.Part.Id">
+                                    <td>
+                                        <figure class="itemside align-items-center">
+                                            <div class="aside"><img src="@String.Format("data:image/gif;base64,{0}", Convert.ToBase64String(product.Part.PartImages.First().Bytes))" alt="Image" class="img-sm"></div>
+                                            <figcaption class="info">
+                                                <p class="title text-light" data-abc="true">@product.Part.Name</p>
+                                                <div class="text-danger">
+                                                    @Html.ValidationMessage($"{product.PartId}")
+                                                </div>
+                                            </figcaption>
+                                        </figure>
+                                    </td>
+                                    <td>
+                                        <input type="number" disabled part-id="@product.Part.Id" class="form-control count-el" value="@product.Count" />
+                                    </td>
+                                    <td>
+                                        <div class="price-wrap"> <var class="price text-light">@product.Part.PartPrice лв.</var></div>
+                                    </td>
+                                    <td class="text-right d-none d-md-block"><a asp-controller="Parts" asp-action="Details" asp-route-partId="@product.Part.Id" class="btn btn-success">Виж продукт</a></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </aside>
+        <aside class="col-lg-3">
+            <div class="card">
+                <div class="card-body">
+                    <dl class="dlist-align">
+                        <dt>Общо:</dt>
+                        <dd class="text-right text-light b ml-3"><strong id="total-price">@Model.Parts.Sum(x=> x.Part.PartPrice * x.Count) лв.</strong></dd>
+                    </dl>
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>
+@if ((User.IsInRole(Administrator) || User.IsInRole(Worker)) && Model.OrderStatus.Status == "Обработва се")
+{
+    <div class="d-flex justify-content-center">
+        <a asp-controller="Orders" asp-action="ChangeStatusToSent" asp-route-id="@Model.Id" class="btn btn-primary mt-3 mx-3 change-sent">Промени статус на изпратена</a>
+    </div>
+}
+else if ((User.IsInRole(Administrator) || User.IsInRole(Worker)) && Model.OrderStatus.Status == "Предадена на куриер")
+{
+    <div class="d-flex justify-content-center">
+        <a asp-controller="Orders" asp-action="ChangeStatusToDelivered" asp-route-id="@Model.Id" class="btn btn-success mt-3 mx-3 change-delivered">Промени статус на доставена</a>
+    </div>
+}
+@if (Model.OrderStatus.Status == "Обработва се" && (!User.IsInRole(Administrator) || !User.IsInRole(Worker)))
+{
+    <div class="d-flex justify-content-center">
+        <a onclick="Reject('@Model.Id')" class="reject text-center mt-4">Откажи поръчка</a>
+    </div>
+}
+
+@section Scripts{
+    <script src="/js/RejectOrder.js"></script>
+}

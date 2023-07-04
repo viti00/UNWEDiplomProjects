@@ -1,0 +1,16 @@
+﻿.table-field{
+    background-color: dimgray;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+.form-group {
+    color: white;
+}
+.btn-containter{
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+body {
+    background-color: #292828;
+}

@@ -1,0 +1,130 @@
+﻿@using static CarPartsShop.Infrastructure.RolesConstants;
+@model QueryModelOrders
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/Orders.css" />
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <link rel="stylesheet" href="~/css/PartsIndex.css" />
+}
+@{
+    ViewBag.Title = "Поръчки";
+}
+
+@{
+    int counter = 1;
+}
+
+<div class="row">
+    <div class="row mt-3">
+        <form>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="Search"  for="search">Търсене:</label>
+                        <input asp-for="Search" type="text" class="form-control" id="search" placeholder="Въведете търсене">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="SortOrders" for="sort">Сортиране:</label>
+                        <select asp-for="SortOrders" class="form-control" id="sort">
+                            <option value="0" selected>----Сортиране на поръчки----</option>
+                            <option value="1">Дата: от нова към стара</option>
+                            <option value="2">Дата: от стара към нова</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="FilterOrders" for="filter">Филтриране:</label>
+                        <select asp-for="FilterOrders" class="form-control" id="filter">
+                            <option value="0">----Статус на поръчката----</option>
+                            <option value="1">Обработва се</option>
+                            <option value="2">Предадена на куриер</option>
+                            <option value="3">Доставена</option>
+                            <option value="4">Отказана</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+           
+            <div class="col-md-12 mt-3 button-wrapper">
+                <button class="btn btn-primary">Търсене</button>
+            </div>
+            
+        </form>
+    </div>
+
+</div>
+@if(Model.Orders.Count == 0 && (Model.Search != null || Model.FilterOrders != 0))
+{
+    <h1 class="text-light text-center">Няма поръчки по зададените критерии</h1>
+}
+else if (Model.Orders.Count == 0)
+{
+    <h1 class="text-light text-center">Все още нямате поръчки</h1>
+
+}
+else
+{
+    @if(User.IsInRole(Administrator) || User.IsInRole(Worker))
+    {
+        <div class="export-btn-container">
+            <a asp-controller="Orders" asp-action="ExportToExcel" asp-route-sortOrders="@Model.SortOrders" asp-route-search="@Model.Search" asp-route-filterOrders="@Model.FilterOrders"  id="export-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M15 18v-2h-6v2h6zm4-8v6H5V7h14zm2-4H3v2h18V3zm-4.07 9.94l-2.83 2.83-1.41-1.41 4.24-4.24 4.24 4.24-1.42 1.42z" /></svg>
+                Експорт
+            </a>
+        </div>
+    }
+    
+
+    <div class="table-section">
+        <div class="table-responsive">
+            <table class="table table-hover table-dark w-100">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Поръчка №</th>
+                        <th scope="col">Име</th>
+                        <th scope="col">Имейл</th>
+                        <th scope="col">Телефон</th>
+                        <th scope="col">Адрес за доставка</th>
+                        <th scope="col">Статус</th>
+                        <th scope="col">Дата</th>
+                        <th scope="col">Платена</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model.Orders)
+                    {
+                        <tr data-id="@order.Id">
+                            <th scope="row">@counter</th>
+                            <td>@order.Id</td>
+                            <td><div>@order.FirstName @order.LastName</div></td>
+                            <td>@order.Email</td>
+                            <td>@order.PhoneNumber</td>
+                            <td>@order.Address</td>
+                            <td id="status">@order.Status</td>
+                            <td>@order.LastModified_19118067</td>
+                            <td>@order.IsPaid</td>
+                            <td>
+                                <a asp-controller="Orders" asp-action="OrderDetails" asp-route-id="@order.Id" title="Детайли" class="btn btn-success"><i class="fas fa-search"></i></a>
+                                @if (order.Status == "Обработва се")
+                                {
+                                    <a onclick="Reject('@order.Id')" id="reject" title="Откажи" class="btn btn-danger"><i class="far fa-trash-alt"></i></a>
+                                }
+                            </td>
+                        </tr>
+                        counter++;
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+    
+
+    @section Scripts{
+    <script src="/js/RejectOrder.js"></script>
+}

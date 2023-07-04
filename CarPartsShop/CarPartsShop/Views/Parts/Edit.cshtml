@@ -1,0 +1,67 @@
+﻿@model PartsFormModel
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/FormPages.css" />
+}
+<div class="row table-field">
+    <div class="wrapper col-sm-12 col-md-10 offset-md-1 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
+        <form method="post" enctype="multipart/form-data">
+            <div class="text-center mt-4 name">
+                <h2 class="text-light">Редактиране на част</h2>
+            </div>
+            <div class="form-group">
+                <label asp-for=Name>Наименование<span class="text-danger">*</span></label>
+                <input asp-for="Name" class="form-control">
+                <span asp-validation-for="Name" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for=PartPrice>Цена<span class="text-danger">*</span></label>
+                <input asp-for="PartPrice" class="form-control">
+                <span asp-validation-for="PartPrice" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for=StockQnt>Налични бройки<span class="text-danger">*</span></label>
+                <input asp-for="StockQnt" class="form-control">
+                <span asp-validation-for="StockQnt" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PartCondition">Състояние<span class="text-danger">*</span></label>
+                <select asp-for="PartCondition" class="form-control" asp-items="ViewBag.ConditionId"><option value=0></option></select>
+                <span asp-validation-for="PartCondition" class="text-danger"></span>
+                <div class="text-danger">
+                    @Html.ValidationMessage("Condition")
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="PartType">Тип<span class="text-danger">*</span></label>
+                <select asp-for="PartType" class="form-control" asp-items="ViewBag.TypeId"><option value=0></option></select>
+                <span asp-validation-for="PartType" class="text-danger"></span>
+                <div class="text-danger">
+                    @Html.ValidationMessage("Type")
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Files">Снимки</label>
+                <input asp-for="Files" name="files" class="form-control" type="file" multiple />
+                <span asp-validation-for="Files" class="small text-danger"></span>
+                <div class="text-danger">
+                    @Html.ValidationMessage("Files")
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for=Description>Описание<span class="text-danger">*</span></label>
+                <textarea rows="3" asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="small text-danger"></span>
+            </div>
+            <div class="btn-containter text-center">
+                <button type="submit" class="btn btn-primary">Редактирай част</button>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
