@@ -1,0 +1,63 @@
+﻿@page
+@model RestaurantOrders.Pages.Requests.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="/css/Forms.css" />
+}
+
+<div class="text-center">
+    <h5>Тук може да направите запитване за резервация, за кетъринг, за специално за вас събитие</h5>
+</div>
+
+<div class="row">
+    <div class="col-md-4 offset-md-4 form">
+        <form method="post">
+            <div class="text-center">
+                <h4>Запитване</h4>
+                <hr/>
+            </div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group text-center">
+                <label asp-for="Request.FullName" class="control-label">Име и фамилия</label>
+                <input asp-for="Request.FullName" class="form-control" />
+                <span asp-validation-for="Request.FullName" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center">
+                <label asp-for="Request.PhoneNumber" class="control-label">Телефонен номер</label>
+                <input asp-for="Request.PhoneNumber" class="form-control" />
+                <span asp-validation-for="Request.PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center">
+                <label asp-for="Request.RequestText" class="control-label">Вашето запитване</label>
+                <textarea asp-for="Request.RequestText" class="form-control" rows="7"></textarea>
+                <span asp-validation-for="Request.RequestText" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center">
+                <label asp-for="Request.DateOfEvent" class="control-label">Дата на събитието</label>
+                <input asp-for="Request.DateOfEvent" class="form-control" />
+                <span asp-validation-for="Request.DateOfEvent" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center" hidden>
+                <label asp-for="Request.RequestDate" class="control-label"></label>
+                <input asp-for="Request.RequestDate" class="form-control" />
+                <span asp-validation-for="Request.RequestDate" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center" hidden>
+                <label asp-for="Request.LastModified_19118066" class="control-label"></label>
+                <input asp-for="Request.LastModified_19118066" class="form-control" />
+                <span asp-validation-for="Request.LastModified_19118066" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center mb-2 mt-2">
+                <input type="submit" value="Create" class="btn btn-warning" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

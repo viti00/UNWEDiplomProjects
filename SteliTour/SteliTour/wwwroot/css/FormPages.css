@@ -1,0 +1,47 @@
+﻿
+
+.bg-blue {
+    background-color: rgba(165,233,250,0.3);
+    border-radius: 10px;
+}
+.bg-blue {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+   
+}
+#my-container {
+    max-height: 600px;
+
+}
+
+.form-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.form-wrapper {
+    background-color: rgba(165,233,250,0.7);
+    border-radius: 10px;
+    max-height: 600px;
+    overflow: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+    .form-wrapper form {
+        padding: 20px;
+    }
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+@media (max-width: 768px) {
+    .form-wrapper {
+        max-height: none;
+        height: 100%;
+    }
+}

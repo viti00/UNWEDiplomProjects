@@ -1,0 +1,92 @@
+﻿@page
+@model HomeEssentials.Pages.Items.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+@section Styles{
+    <style>
+        .text-container{
+            height: 250px;
+            max-height: 250px;
+            overflow: auto;
+            border-radius: 5px;
+            border: 1px solid black;
+            padding: 5px;
+        }
+    </style>
+}
+
+@{
+    double avgGrade = 0;
+    if(Model.Item.Reviews != null && Model.Item.Reviews.Count > 0)
+    {
+        avgGrade = Model.Item.Reviews.Sum(x => x.Grade) / Model.Item.Reviews.Count;
+    }
+}
+
+<div class="text-center">
+    <h1>@Model.Item.Name</h1>
+</div>
+
+
+<div class="row">
+    <div class="col-md-5 offset-md-1 mb-3">
+        <img src="@Model.Item.ItemImageUrl" style="max-width: 100%;max-height: 451px; border-radius: 5px;"/>
+    </div>
+    <div class="col-md-5" style="background-color: white; max-height: 451px; border-radius: 5px;">
+        <div class="text-center">
+            <h5>Описание на продукта</h5>
+            <p>Този продукт има оценка: @avgGrade.ToString("f1") от 5.0! <a asp-page="/Reviews/Index" asp-route-id="@Model.Item.Id">Мненията вижте тук</a></p>
+            <hr/>
+        </div>
+        <div class="text-container">
+            @foreach (var p in Model.Item.ItemDescription.Split("\n"))
+            {
+                <p>@p</p>
+            }
+        </div>
+        
+        <div class="text-center">
+            <h5>Цена: @Model.Item.Price.ToString("f2") лв.</h5>
+        </div>
+        @if (signInManager.IsSignedIn(User) && !User.IsInRole("Administrator") && !User.IsInRole("OrdersManager"))
+        {
+            <div class="text-center">
+                <form asp-page="/Carts/Details" asp-page-handler="AddToCart" asp-route-itemId="@Model.Item.Id">
+                    <div class="row text-center mb-4">
+                        <div class="col-md-4 offset-md-4">
+                            <input type="number" for="count" name="count" style="max-width: 70px; text-align: center" />
+                        </div>
+
+                    </div>
+                    <div class="row text-center">
+                        <div class="col-md-6 offset-md-3 mb-3">
+                            <button type="submit" class="btn" style="background-color:  #07cde0;">Добави в количка</button>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        }
+        @if(!signInManager.IsSignedIn(User))
+        {
+            <div class="text-center">
+                <h5>За да пазуравете, трябва да сте влезли с акаунта си!</h5>
+            </div>
+        }
+    </div>
+</div>
+@if (User.IsInRole("Administrator"))
+{
+    <div class="row">
+        <div class="col-md-4 offset-md-4 mb-2 mt-2">
+            <a asp-page="/Items/Edit" asp-route-id="@Model.Item.Id" class="btn btn-primary">Редактирай</a>
+        </div>
+        <div class="col-md-4 mb-2 mt-2">
+            <a asp-page="/Items/Edit" asp-route-type="delete" asp-route-id="@Model.Item.Id" class="btn btn-danger">Изтрий</a>
+        </div>
+    </div>
+}
+

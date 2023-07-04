@@ -1,0 +1,47 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        @if (!User.IsInRole("Administrator"))
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-page="/Orders/Index">Поръчки</a>
+            </li>
+        }
+        
+        @if (User.IsInRole("Administrator") || (signInManager.IsSignedIn(User) && !User.IsInRole("Cooker") && !User.IsInRole("DeliveryGuy")))
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-page="/Requests/Index">Запитвания</a>
+            </li>
+        }
+        if (!User.IsInRole("Administrator") && !User.IsInRole("Cooker") && !User.IsInRole("DeliveryGuy"))
+        {
+            <li class="nax-item">
+                <a asp-page="/Bags/Details" title="Торбичка">
+                    <span class="fa-stack fa-lg">
+                        <i class="fa fa-shopping-bag fa-stack-1x text-dark fa-lg"></i>
+                        <span style="margin-top: 5px; font-size: 13px;" class="fa-stack-1x product-count text-light" id="bag-count">5</span>
+                    </span>
+                </a>
+            </li>
+        }
+        <li class="nav-item">
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                <button type="submit" class="nav-link btn btn-link text-dark">Излез</button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Регистрирай се</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Влез</a>
+        </li>
+    }
+</ul>

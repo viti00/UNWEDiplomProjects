@@ -1,0 +1,49 @@
+﻿@page
+@model RestaurantOrders.Pages.Orders.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+@section Styles{
+    <link rel="stylesheet" href="/css/OrderIndex.css"/>
+}
+
+<div class="row cont">
+    @foreach (var item in Model.Order)
+    {
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">@item.PhoneNumber</h5>
+                    <p class="card-text">@item.DeliveryAddres</p>
+                    @if(item.DesiredDeliveryTime != null)
+                    {
+                        <h6 class="card-subtitle mb-2 text-danger">Трабва да се достави до:<br/> @item.DesiredDeliveryTime</h6>
+                    }
+                    <p>Състояние на поръчката: @item.Status</p>
+                    
+                </div>
+                <div class="buttons text-center">
+
+                    <a asp-page="/Bags/Details" asp-route-bId="@item.BagId" asp-route-type="ordered" class="btn btn-success mb-2">Виж поръчката</a>
+                    @if (!User.IsInRole("Cooker") && !User.IsInRole("DeliveryGuy") && !User.IsInRole("Administrator") && item.Status != "Доставена")
+                    {
+                        <a asp-page="/Orders/Edit" asp-route-id="@item.Id" class="btn btn-primary mb-2">Редактирай</a>
+                    }
+                    @if (!User.IsInRole("Cooker") && !User.IsInRole("DeliveryGuy") && !User.IsInRole("Administrator") && item.Status != "Доставена")
+                    {
+                        <a asp-page="/Orders/Edit" asp-route-type="reject" asp-route-id="@item.Id" onclick="return Confirm('Наистина ли искате да откажете поръчката?');" class="btn btn-danger mb-2">Откажи поръчката</a>
+                    }
+                    @if (User.IsInRole("Cooker"))
+                    {
+                        <a asp-page="/Orders/Edit" asp-route-type="ready" asp-route-id="@item.Id" class="btn btn-warning mb-2">Готова за доставка</a>
+                    }
+                    @if (User.IsInRole("DeliveryGuy"))
+                    {
+                        <a asp-page="/Orders/Edit" asp-route-type="delivered" asp-route-id="@item.Id" class="btn btn-warning mb-2">Доставена</a>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>

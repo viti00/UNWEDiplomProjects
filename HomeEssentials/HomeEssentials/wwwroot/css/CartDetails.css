@@ -1,0 +1,12 @@
+﻿
+@media (max-width: 780px) {
+    #buttons-cont{
+        display: block !important;
+    }
+
+}
+
+.disabled {
+    pointer-events: none !important;
+    opacity: 0.5 !important;
+}

@@ -1,0 +1,60 @@
+﻿@page
+@model RestaurantOrders.Pages.Meals.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/Forms.css" />
+}
+
+
+<div class="row">
+    <div class="col-md-4 offset-md-4 form">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="text-center">
+                <h4>Добавяне на ястие</h4>
+                <hr />
+            </div>
+            <div class="form-group text-center">
+                <label asp-for="Meal.MealName" class="control-label">Ястие</label>
+                <input asp-for="Meal.MealName" class="form-control" />
+                <span asp-validation-for="Meal.MealName" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center">
+                <label asp-for="Meal.MealDescription" class="control-label">Състваки</label>
+                <textarea asp-for="Meal.MealDescription" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Meal.MealDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center">
+                <label asp-for="Meal.MealPrice" class="control-label">Цена</label>
+                <input asp-for="Meal.MealPrice" class="form-control" />
+                <span asp-validation-for="Meal.MealPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center">
+                <label asp-for="Meal.MealImgUrl" class="control-label">Снимка</label>
+                <input asp-for="Meal.MealImgUrl" class="form-control" />
+                <span asp-validation-for="Meal.MealImgUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center">
+                <label asp-for="Meal.CategoryId" class="control-label">Вид на ястието</label>
+                <select asp-for="Meal.CategoryId" class="form-control" asp-items="@ViewBag.Categories"></select>
+                <span asp-validation-for="Meal.CategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Meal.LasLastModified_19118066" class="control-label"></label>
+                <input asp-for="Meal.LasLastModified_19118066" class="form-control" />
+                <span asp-validation-for="Meal.LasLastModified_19118066" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center mb-2 mt-2">
+                <input type="submit" value="Добави в меню" class="btn btn-warning" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

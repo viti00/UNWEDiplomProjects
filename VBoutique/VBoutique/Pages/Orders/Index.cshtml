@@ -1,0 +1,92 @@
+﻿@page
+@model VBoutique.Pages.Orders.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="/css/OrdersIndex.css"/>
+}
+
+@if(Model.Order != null && Model.Order.Count > 0)
+{
+    @if(User.IsInRole("Admin") || User.IsInRole("OrdersManager"))
+    {
+        <div class="row mb-5">
+            <div class="col-md-4 offset-md-5">
+                <a asp-page="/Orders/ExportData" asp-page-handler="Export" class="btn btn-success">Изтегли данни</a>
+            </div>
+        </div>
+    }
+    
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Име
+            </th>
+            <th>
+                Фамилия
+            </th>
+            <th>
+               Адрес
+            </th>
+            <th>
+                Телефон
+            </th>
+            <th>
+                Количка
+            </th>
+            <th>
+                Последна промяна
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Order) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeliveryAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
+            </td>
+            <td>
+                <a style="color: green" asp-page="/ShoppingCarts/Info" asp-route-type="Closed" asp-route-cartId="@item.ShoppingCartId">Виж поръчка</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastModified_19118155)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Редактирай</a> |
+                        <a asp-page="./Edit" asp-page-handler="Reject" style="color: red" asp-route-id="@item.Id" onclick="return Confirm();">Откажи</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+}
+else{
+    <h5 class="text-center">Няма поръчки</h5>
+}
+
+@section Scripts{
+    <script>
+        function Confirm() {
+            if (confirm("Желаете ли да премахнете този продукт?")) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    </script>
+}

@@ -1,0 +1,60 @@
+﻿@page
+@model HomeEssentials.Pages.Items.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="text-center">
+    <h1>Редактиране на продукт</h1>
+</div>
+<div class="row">
+    <div class="col-md-4 offset-md-4" style="background-color: #07cde0; border-radius: 5px; border: 1px solid black">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Item.Id" />
+            <div class="form-group">
+                <label asp-for="Item.Name" class="control-label">Наименование на продукт</label>
+                <input asp-for="Item.Name" class="form-control" />
+                <span asp-validation-for="Item.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Item.CategoryId" class="control-label">Категория</label>
+                <select asp-for="Item.CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                <span asp-validation-for="Item.CategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Item.ItemDescription" class="control-label">Описание на продукта</label>
+                <textarea asp-for="Item.ItemDescription" class="form-control" rows="7"></textarea>
+                <span asp-validation-for="Item.ItemDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Item.Price" class="control-label">Цена в лева</label>
+                <input style="text-align: right" asp-for="Item.Price" class="form-control" />
+                <span asp-validation-for="Item.Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Item.ItemImageUrl" class="control-label">Линк към снимка на продукта</label>
+                <input asp-for="Item.ItemImageUrl" class="form-control" />
+                <span asp-validation-for="Item.ItemImageUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Item.CreatedDate" class="control-label"></label>
+                <input asp-for="Item.CreatedDate" class="form-control" />
+                <span asp-validation-for="Item.CreatedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Item.LastModified_19118075" class="control-label"></label>
+                <input asp-for="Item.LastModified_19118075" class="form-control" />
+                <span asp-validation-for="Item.LastModified_19118075" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center mb-2 mt-2">
+                <input type="submit" value="Запазване" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

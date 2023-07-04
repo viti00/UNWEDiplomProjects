@@ -1,0 +1,44 @@
+﻿@page
+@model PartsShop.Pages.PartReviews.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1 class="text-center">Редактиране на мнение</h1>
+<hr/>
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="PartReview.Id" />
+            <div class="form-group">
+                <label asp-for="PartReview.ReviewText" class="control-label">Вашето мнение/питане</label>
+                <textarea asp-for="PartReview.ReviewText" class="form-control" rows="5"></textarea>
+                <span asp-validation-for="PartReview.ReviewText" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="PartReview.PartId" class="control-label"></label>
+                <input asp-for="PartReview.PartId" class="form-control" value="@Model.PartReview.PartId"/>
+                <span asp-validation-for="PartReview.PartId" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="PartReview.UserId" class="control-label"></label>
+                <input asp-for="PartReview.UserId" class="form-control" value="@ViewBag.UserId"/>
+                <span asp-validation-for="PartReview.UserId" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="PartReview.LastModified_19118073" class="control-label"></label>
+                <input asp-for="PartReview.LastModified_19118073" class="form-control" />
+                <span asp-validation-for="PartReview.LastModified_19118073" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center mb-3 mt-3">
+                <input type="submit" value="Редактирай" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

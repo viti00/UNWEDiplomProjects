@@ -1,0 +1,15 @@
+﻿@model BestResultFormModel
+
+@{
+    ViewBag.Title = "Create Best Result";
+    ViewBag.ButtonName = "Post";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/AllCreateAndEditPages.css" />
+}
+<partial name="_BestResultsAddAndEditPartial" model="@Model"/>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,75 @@
+﻿@page
+@inject SignInManager<IdentityUser> signInManager
+@model FishermanMarket.Pages.Products.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/Details.css" />
+    <link rel="stylesheet" href="~/css/BodyColor.css" />
+}
+
+<div class="container">
+    <div class="col-lg-8 border p-3 main-section" style="background-color: yellowgreen;">
+        <div class="row m-0">
+            <div class="col-lg-4 left-side-product-box pb-3">
+                <img style="max-width: 300px; max-height: 300px;" class="border p-3" src="@(Model.Product.Image != null ? String.Format("data:image/gif;base64,{0}", Convert.ToBase64String(Model.Product.Image.Bytes)):"https://st.depositphotos.com/2934765/53192/v/600/depositphotos_531920820-stock-illustration-photo-available-vector-icon-default.jpg")" alt="@Model.Product.Name">
+            </div>
+            <div class="col-lg-8">
+                <div class="right-side-pro-detail border p-3 m-0">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <p class="m-0 p-0" style="color: black; font-size: large">@Model.Product.Name</p>
+                        </div>
+                        <div class="col-lg-12">
+                            <p class="m-0 p-0 price-pro">Цена: @Model.Product.Price лв.</p>
+                            <hr class="p-0 m-0">
+                        </div>
+                        <div class="col-lg-12 pt-2">
+                            <h5>Описание</h5>
+                            <span>
+                                @Model.Product.Description
+                            </span>
+                            <hr class="m-0">
+                        </div>
+                        @if (signInManager.IsSignedIn(User) && (!User.IsInRole("Admin") && !User.IsInRole("OrdersSender")))
+                        {
+                            <div class="offset-3">
+                                <form method="post" asp-route="@Model.Product.Id">
+                                    <div class="col-lg-12 offset-2">
+                                        <h6>Количество:</h6>
+                                        <input min="1" type="number" name="quantity" class="form-control text-center" style="max-width: 100px;" value="0">
+                                    </div>
+                                    <div class="col-lg-12 mt-3">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <button type="submit" class="btn btn-success w-100">Добави в раница</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            
+                        }
+                        else
+                        {
+                            <h4>За да пазуравате е необходимо да имате акаунт</h4>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        @if (User.IsInRole("Admin"))
+        {
+            <div class="text-center mt-3">
+                <a asp-page="Edit" asp-route-id="@Model.Product.Id" style="margin-bottom: 10px;" class="btn btn-primary">Редактирай</a>
+                <form method="post" asp-page-handler="Delete" asp-route-id="@Model.Product.Id">
+                    <button class="btn btn-danger">Изтрий</button>
+                </form>
+            </div>
+           
+        }
+    </div>
+</div>

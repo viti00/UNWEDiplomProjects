@@ -1,0 +1,97 @@
+﻿@page
+@model PartsShop.Pages.Carts.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="/css.CartDetails.css"/>
+}
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="container padding-bottom-3x mb-1">
+    <div class="table-responsive shopping-cart">
+        @if(Model.Cart != null && Model.Cart.CartParts.Count > 0)
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Продукт</th>
+                        <th class="text-center">Брой</th>
+                        <th class="text-center">Ед. Цена</th>
+                        @if (Model.Cart.IsOrdered == false)
+                        {
+                            <th class="text-center"><a class="btn btn-sm btn-outline-danger" asp-page="/Carts/Edit" asp-page-handler="RemoveAll" onclick="return Confirm('Желаете ли да изпразните количката');" asp-route-cartId="@Model.Cart.Id">Махни всички</a></th>
+
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var part in Model.Cart.CartParts)
+                    {
+                        <tr>
+                            <td>
+                                <div class="product-item">
+                                    <img style="max-width: 70px;" src="@part.Part.ImageUrl" alt="@part.Part.PartName">
+                                    <div class="product-info">
+                                        <h5 class="product-title"><a style="color: black;" asp-page="/Parts/Details" asp-route-id="@part.Part.Id">@part.Part.PartName</a></h5>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <div class="count-input">
+                                   <h6>@part.PartCount</h6>
+                                </div>
+                            </td>
+                            <td class="text-center text-lg text-medium">@part.Part.PartPrice лв.</td>
+                            @if(Model.Cart.IsOrdered == false)
+                            {
+                                <td class="text-center"><a class="remove-from-cart" asp-page="/Carts/Edit" asp-page-handler="RemovePart" asp-route-partId="@part.Part.Id" asp-route-cartId="@Model.Cart.Id" onclick="return Confirm('Желаете ли да премахнете този продукт от количката');" title="Премахни"><i style="color: red" class="fa fa-trash"></i></a></td>
+
+                            }
+                        </tr>
+                    }
+                    
+
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <h5 class="text-center">Количката е празна</h5>
+        }
+
+    </div>
+    @if (Model.Cart != null && Model.Cart.CartParts.Count > 0)
+    {
+        <div class="shopping-cart-footer">
+            <div class="column text-lg">Общо: <span class="text-medium">@(Model.Cart.CartParts.Sum(x => x.PartCount * x.Part.PartPrice)) лв.</span></div>
+        </div>
+    }
+   
+    <div class="shopping-cart-footer">
+        @if (Model.Cart != null && Model.Cart.CartParts.Count > 0 && Model.Cart.IsOrdered == false)
+        {
+            <div class="column mt-2 mb-3"><a class="btn btn-success" asp-page="/Orders/Create">Направи поръчка</a></div>
+
+        }
+        <div class="column"><a class="btn btn-outline-secondary" asp-page="/Parts/Index">Продължи да пазаруваш</a></div>
+        
+    </div>
+</div>
+
+
+@section Scripts{
+    <script>
+        function Confirm(message) {
+            if (confirm(message)) {
+                return true;
+
+            }
+            else {
+                return false;
+            }
+        }
+    </script>
+}

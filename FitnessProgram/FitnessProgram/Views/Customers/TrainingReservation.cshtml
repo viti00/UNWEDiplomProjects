@@ -1,0 +1,73 @@
+﻿@model ReservationFormModel
+@section Styles{
+    <link rel="stylesheet" href="~/css/Reservation.css"/>
+}
+
+<div class="container">
+    <div class="datepicker">
+        <label for="datepicker" class="text-light">Choose date:</label>
+        <input type="date" id="datepicker" name="datepicker">
+    </div>
+    <div class="timeslots display-none">
+        <div class="timeslot text-center" range-id="0">
+            <span>7:00 - 8:00</span>
+        </div>
+        <div class="timeslot text-center" range-id="1">
+            <span>9:00 - 10:00</span>
+        </div>
+        <div class="timeslot text-center" range-id="2">
+            <span>11:00 - 12:00</span>
+        </div>
+        <div class="timeslot text-center" range-id="3">
+            <span>13:00 - 14:00</span>
+        </div>
+        <div class="timeslot text-center" range-id="4">
+            <span>15:00 - 16:00</span>
+        </div>
+        <div class="timeslot text-center" range-id="5">
+            <span>17:00 - 18:00</span>
+        </div>
+        <div class="timeslot text-center" range-id="6">
+            <span>19:00 - 20:00</span>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="reservationModal" tabindex="-1" role="dialog" aria-labelledby="reservationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reservationModalLabel">Enter Reservation Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="reservationForm" method="post">
+                    <div class="form-group">
+                        <label asp-for="Name" for="nameInput">Name</label>
+                        <input asp-for="Name" type="text" class="form-control" id="nameInput" name="Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Phone" for="phoneInput">Phone</label>
+                        <input asp-for="Phone" type="text" class="form-control" id="phoneInput" name="Phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Address" for="addressInput">Address</label>
+                        <input asp-for="Address" type="text" class="form-control" id="addressInput" name="Address" required>
+                    </div>
+                    <input asp-for="DateId" type="hidden" id="dateIdInput" name="DateId" value="">
+                    <input asp-for="RangeId" type="hidden" id="rangeIdInput" name="RangeId" value="">
+                    <div class="text-center">
+
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/Reservation.js"></script>
+}

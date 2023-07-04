@@ -1,0 +1,151 @@
+﻿@page
+@model HomeEssentials.Pages.Items.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@section Styles{
+    <style>
+        .arrow-left,
+        .arrow-right {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: #07cde0;
+            color: white;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .arrow-left {
+            margin-right: 10px;
+        }
+
+        .arrow-right {
+            margin-left: 10px;
+        }
+
+        .filter-img {
+            width: 44px;
+            background-color: #07cde0;
+            border-radius: 50%
+        }
+
+        .filter-link {
+            margin-right: 5px;
+        }
+
+        .disabled {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        .page-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 30px;
+        }
+    </style>
+}
+<div class="row">
+    <div class="col-md-12">
+        <form>
+            <div class="row">
+                <div class="col-md-4 mb-2">
+                    <div class="form-group text-center">
+                        <input asp-for="Search" type="text" class="form-control" id="search" placeholder="Въведете търсене">
+                    </div>
+                </div>
+                <div class="col-md-4 mb-2">
+                    <div class="form-group text-center">
+                        <select asp-for="Sort" class="form-control" id="sort">
+                            <option class="text-center" value="0" selected>Сортиране нормално</option>
+                            <option class="text-center" value="1">Сортиране по цена от ниска към висока</option>
+                            <option class="text-center" value="2">Сортиране по цена от висока към ниска</option>
+                        </select>
+                    </div>
+                    <input hidden asp-for="Filter" value="@Model.Filter" />
+                    <input hidden asp-for="Search" value="@Model.Search" />
+                    <input hidden asp-for="PageIndex" value="@Model.PageIndex" />
+                </div>
+                <div class="col-md-4 text-center">
+                    <button class="btn" style="background-color: #07cde0">Приложи</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+<hr style="height: 3px;" />
+<div class="d-flex flex-wrap mt-4 mb-4">
+    <a class="filter-link" title="ТВ, Аудио и Електроника" asp-route-filter="1"><img class="filter-img" src="/tv.png" /></a>
+    <a class="filter-link" title="Телефони и Таблети" asp-route-filter="2"><img class="filter-img" src="/phone.png" /></a>
+    <a class="filter-link" title="Лаптопи, компютри и периферия" asp-route-filter="3"><img class="filter-img" src="/pc.png" /></a>
+    <a class="filter-link" title="Домакински Електроуреди" asp-route-filter="4"><img class="filter-img" src="/dom.png" /></a>
+    <a class="filter-link" title="Уреди за здраве и красота" asp-route-filter="5"><img class="filter-img" src="/b&h.png" /></a>
+    <a class="filter-link" title="Климатици, уреди за отопление и грижа за въздуха" asp-route-filter="6"><img class="filter-img" src="/clima.png" /></a>
+    <a class="filter-link" title="Дом и Градина" asp-route-filter="7"><img class="filter-img" src="/garden.png" /></a>
+    <a class="filter-link" title="Спорт и Свободно време" asp-route-filter="8"><img class="filter-img" src="/sport.png" /></a>
+    <a class="filter-link" title="Фото и Видео" asp-route-filter="9"><img class="filter-img" src="/photo.png" /></a>
+    <a class="filter-link" title="Играчки и Детски артикули" asp-route-filter="10"><img class="filter-img" src="/kids.png" /></a>
+</div>
+<hr style="height: 3px;" />
+@if (Model.Item == null || Model.Item.Count < 1)
+{
+    <div class="text-center">
+        <h5 style="color: #07cde0;">За съжаление, нямаме продукти отговарящи на търсените от вас параметри</h5>
+    </div>
+}
+else
+{
+
+    <div class="row">
+            @foreach (var item in Model.Item)
+            {
+                <div class="col-md-3 mb-4">
+                    <a asp-page="/Items/Details" asp-route-id="@item.Id" style="text-decoration: none; color: black; border-radius: 5px;">
+                        <div class="card" style="height: 30rem; background-color: #07cde0;">
+                            <img src="@item.ItemImageUrl" style="max-height: 18rem!important" class="card-img-top" alt="@item.Name">
+                            <div class="card-body text-center">
+                                <div style="height: 7rem; max-height: 7rem;">
+                                    <h5 class="card-title">@item.Name</h5>
+                                </div>
+                                <h5>Цена: @item.Price.ToString("f2") лв.</h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+            }
+
+    </div>
+    <div class="text-center">
+        <div class="page-btn mb-3">
+            <a style="text-decoration: none" asp-page="Items/Index" class="@(Model.PageIndex == 1 ? "disabled" : string.Empty)"
+           asp-route-filter="@Model.Filter"
+           asp-route-sort="@Model.Sort"
+           asp-route-search="@Model.Search"
+           asp-route-pageIndex="@Model.PageIndex - 1">
+                <div class="arrow-left">
+                    <i class="fa fa-chevron-left"></i>
+                </div>
+            </a>
+
+            <h5 style="color: #07cde0;">Страница @Model.PageIndex от @Model.TotalPages</h5>
+
+            <a style="text-decoration: none" asp-page="Items/Index" class="@(Model.PageIndex == Model.TotalPages ? "disabled" : string.Empty)"
+           asp-route-filter="@Model.Filter"
+           asp-route-sort="@Model.Sort"
+           asp-route-search="@Model.Search"
+           asp-route-pageIndex="@Model.PageIndex + 1">
+                <div class="arrow-right">
+                    <i class="fa fa-chevron-right"></i>
+                </div>
+            </a>
+        </div>
+    </div>
+}

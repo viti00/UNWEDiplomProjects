@@ -1,0 +1,24 @@
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+@section Styles{
+    <style>
+        body{
+            background-color: black;
+        }
+    </style>
+}
+
+<h2 class="text-danger text-center">An error occurred while processing your request.</h2>
+
+@if (Model.ErrorMessage != "")
+{
+    <div class="text-center">
+        <h5 class="text-ceter text-danger">
+            Error: @Model.ErrorMessage
+        </h5>
+    </div>
+    
+}

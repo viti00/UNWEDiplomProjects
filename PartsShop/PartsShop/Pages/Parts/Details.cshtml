@@ -1,0 +1,132 @@
+﻿@page
+@using System.Security.Claims;
+@model PartsShop.Pages.Parts.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+@section Styles{
+    <link rel="stylesheet" href="/css/PartsDetails.css" />
+
+}
+
+<div class="container bootdey">
+    <div class="col-md-12">
+        <section class="panel">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="pro-img-details">
+                            <img src="@Model.Part.ImageUrl" alt="@Model.Part.PartName">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h4 class="pro-d-title text-center">
+                                @Model.Part.PartName
+                        </h4>
+                        <div style="height: 300px; overflow: auto; border-radius: 5px; border: 1px solid black">
+                            <p style="padding: 10px;">
+                                @Model.Part.PartDescription
+                            </p>
+                        </div>
+
+                        <div class="product_meta text-center">
+                            <span class="posted_in"> <strong>Категория: @Model.Part.Category.CategoryName</strong></span>
+
+                        </div>
+                        <div class="m-bot15 text-center"> <strong>Цена: @Model.Part.PartPrice.ToString("f2") лв.</strong></div>
+                        @if (_signInManager.IsSignedIn(User) && !User.IsInRole("Admin") && !User.IsInRole("OrdersManager"))
+                        {
+                            <form asp-page="/Carts/AddToCart" method="get">
+                                <div class="form-group mb-5 text-center">
+                                    <label>Брой</label>
+                                    <div class="col-md-4 offset-md-5 text-center">
+                                        <input type="hidden" name="partId" for="partId" value="@Model.Part.Id" />
+                                        <input name="count" for="count" type="number" placeholder="0" style="text-align: right" class="form-control quantity">
+                                    </div>
+
+                                </div>
+                                <div class="text-center">
+                                    <button class="btn btn-round btn-danger">Добави в количка</button>
+                                </div>
+                            </form>
+                        }
+                        else
+                        {
+                            <h5 class="text-center">Трябва да сте влезли, за да направите поръчка</h5>
+                        }
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+</div>
+@if (_signInManager.IsSignedIn(User))
+{
+    <div class="row">
+        <div class="col-md-4 offset-md-4">
+            <a asp-page="/PartReviews/Create" asp-route-partId="@Model.Part.Id" class="btn btn-primary">Добави мнение/питане</a>
+        </div>
+    </div>
+}
+else
+{
+    <h5 class="text-center">Трябва да сте влезли, за да добавите мнение/питане</h5>
+}
+
+<div class="row mt-3">
+    @if(Model.Part.PartReviews != null && Model.Part.PartReviews.Count > 0)
+    {
+        @foreach (var review in Model.Part.PartReviews.OrderByDescending(x=> x.LastModified_19118073))
+        {
+            <div class="col-md-6 offset-md-3 mb-3" style="border-radius: 5px; border: 1px solid black">
+                <div class="row justify-content-between">
+                    <div class="col-md-4"><p>От: @review.User.UserName</p></div>
+                    <div class="col-md-4"><p>Последна промяна: @review.LastModified_19118073.ToString()</p></div>
+                </div>
+                <hr/>
+                <div class="row">
+                    <div class="text-center" style="height: 100px; overflow: auto; padding: 10px;">
+                        <p>@review.ReviewText</p>
+                    </div>
+                </div>
+                <div class="row justify-content-between mt-3 mb-2">
+                    @if(_signInManager.IsSignedIn(User) && review.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
+                    {
+                        <div class="col-md-4">
+                            <a asp-page="/PartReviews/Edit" asp-route-id="@review.Id" class="btn btn-primary">Редактирай</a>
+                        </div>
+                    }
+                    @if (_signInManager.IsSignedIn(User) && (review.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier) || User.IsInRole("Admin")))
+                    {
+                        <div class="col-md-4">
+                            <a asp-page="/PartReviews/Edit" asp-page-handler="Delete" asp-route-reviewId="@review.Id" onclick="return Confirm();" class="btn btn-danger">Изтрий</a>
+                        </div>
+                    }
+                    
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <h5 class="text-center">За този продукт все още няма мнения/питания</h5>
+    }
+
+</div>
+@section Scripts{
+    <script>
+        function Confirm(){
+            if(confirm("Желаете ли да изтриете мнението/питането?")){
+                return true;
+
+            }
+            else{
+                return false;
+            }
+        }
+    </script>
+}

@@ -1,0 +1,53 @@
+﻿@page
+@model RestaurantOrders.Pages.Orders.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+@section Styles{
+    <link rel="stylesheet" href="~/css/Forms.css" />
+}
+
+<div class="row">
+    <div class="col-md-4 offset-md-4 form">
+        <form method="post">
+            <div class="text-center">
+                <h4>Поръчка</h4>
+                <hr />
+            </div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <div class="form-group" hidden>
+                <label asp-for="Order.UserId" class="control-label"></label>
+                <input asp-for="Order.UserId" class ="form-control" value="@ViewBag.UserId"/>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Order.BagId" class="control-label"></label>
+                <input asp-for="Order.BagId" class="form-control" value="@ViewBag.BagId"/>
+                <span asp-validation-for="Order.BagId" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center">
+                <label asp-for="Order.PhoneNumber" class="control-label">Телефонен номер</label>
+                <input asp-for="Order.PhoneNumber" class="form-control" />
+                <span asp-validation-for="Order.PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center">
+                <label asp-for="Order.DeliveryAddres" class="control-label">Аздрес за доставка</label>
+                <textarea asp-for="Order.DeliveryAddres" class="form-control" rows="2"></textarea>
+                <span asp-validation-for="Order.DeliveryAddres" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Order.DesiredDeliveryTime" class="control-label text-center">Ако желаете поръчката да бъде доставена в определен за вас час може да го посочите от тук</label>
+                <input asp-for="Order.DesiredDeliveryTime" class="form-control"/>
+                <span asp-validation-for="Order.DesiredDeliveryTime" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center mb-2 mt-2">
+                <input type="submit" value="Направи поръчка" class="btn btn-warning" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

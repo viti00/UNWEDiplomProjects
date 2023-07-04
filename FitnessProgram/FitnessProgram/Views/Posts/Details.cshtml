@@ -1,0 +1,197 @@
+﻿@using FitnessProgram.Data
+@using FitnessProgram.Data.Models
+@using FitnessProgram.Infrastructure
+@using Microsoft.AspNetCore.Identity
+@using static FitnessProgram.WebConstants;
+
+@inject SignInManager<User> SignInManager
+@model PostDetailsModel
+
+@{
+    ViewBag.Title = "Post Details";
+    ViewBag.IsCreator = false;
+}
+
+@{
+    var isSignIn = SignInManager.IsSignedIn(User);
+}
+
+@if (isSignIn)
+{
+    if ((User.IsAdministrator() || User.IsInRole(ModeratorRoleName)) || Model.Creator.Id == User.GetId())
+    {
+        ViewBag.IsCreator = true;
+    }
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/DetailsShared.css" />
+    <link rel="stylesheet" href="~/css/PostsDetails.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+}
+
+
+<div class="section">
+    <div class="color-overlay"></div>
+
+    @if (Model.Photos.Count() > 0)
+    {
+        <section class="img-container justify-content-center">
+            <div class="carousel slide w-auto" data-ride="carousel">
+                <div onclick="Close()" role="button">
+                    <button class="btn-close"></button>
+                </div>
+                <div class="carousel-inner w-auto">
+                    @for (int i = 0; i < Model.Photos.Count(); i++)
+                    {
+                        <div class="carousel-item" position="@i">
+                            <img class="d-block image" src="@String.Format("data:image/gif;base64,{0}", Model.Photos[i])" alt="Image">
+                        </div>
+                    }
+                </div>
+                <a onclick="Previous()" class="carousel-control-prev w-auto" role="button">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a onclick="Next()" class="carousel-control-next w-auto" role="button">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        </section>
+    }
+    <div class="container my-5 py-5">
+        <div class="row d-flex justify-content-center">
+            <div class="col-sm-12 col-md-12 col-lg-10 offset-lg-1 col-xl-8 offset-xl-2">
+                <div class="card custom-container">
+                    <div id="post" data-id="@Model.Id" class="card-body">
+                        <div class="d-flex flex-start align-items-center">
+                            <img class="rounded-circle shadow-1-strong me-3 post-creator-photo"
+                                 src="@String.Format("data:image/gif;base64,{0}", Model.Creator.ProfilePicture)" alt="avatar" width="60"
+                                 height="60" />
+                            <div>
+                                <h6 class="fw-bold text-primary mb-1 text-light">@Model.Creator.Username</h6>
+                                <p class="small mb-0 text-light">
+                                    Posted on - @Model.CreatedOn
+                                </p>
+                            </div>
+                            @if (ViewBag.IsCreator == true)
+                            {
+                                <div class="dropdown">
+                                    <button class="dropbtn fa fa-cog fa-spin" style="font-size:24px"></button>
+                                    <div class="dropdown-content">
+                                        @if (!User.IsInRole(AdministratorRoleName) && !User.IsInRole(ModeratorRoleName))
+                                        {
+                                            <a asp-controller="Posts" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+
+                                        }
+                                        <a onclick="DeletePost()">Delete</a>
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+
+                        <p class="mt-3 mb-4 pb-2 text-center">
+                            @for (var i = 0; i < (Model.Photos.Count() > 3 ? 3 : Model.Photos.Count()); i++)
+                            {
+                                <img class="post-img" onclick="ShowPhoto(@i)"
+                                     src="@String.Format("data:image/gif;base64,{0}", Model.Photos[i])" alt="avatar" />
+                            }
+                            @if (Model.Photos.Count() > 3)
+                            {
+                                <i class="dot" onclick="ShowPhoto('more')"><i class="count">@(Model.Photos.Count() - 3)...</i></i>
+                            }
+                        </p>
+                        <div class="mt-3 mb-4 pb-2 text-light post-text">
+                            @foreach (var p in Model.Text.Split("\n"))
+                            {
+                                <p>@p</p>
+                            }
+                        </div>
+
+                        <div class="small d-flex justify-content-start">
+                            <div class="d-flex align-items-center me-3 text-decoration-none">
+                                <i id="likes-count" class="text-light">@Model.LikesCount</i>
+                                <label class="cont">
+                                    <input @(!isSignIn ? "checked disabled" : string.Empty) @(Model.IsCurrUserLikedPost ? "checked" : string.Empty) onclick="OnLike()" id="like-btn" type="checkbox">
+                                    <svg version="1.0" viewBox="0 0 24 24" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M16.4,4C14.6,4,13,4.9,12,6.3C11,4.9,9.4,4,7.6,4C4.5,4,2,6.5,2,9.6C2,14,12,22,12,22s10-8,10-12.4C22,6.5,19.5,4,16.4,4z"></path></svg>
+                                </label>
+                                
+                            </div>
+                            <div class="d-flex align-items-center me-3 text-decoration-none">
+                                <i id="comments-count" class="far fa-comment-dots me-2 text-light">@Model.Comments.Count()</i>
+                                <i style="font-size:24px" class="fa">&#xf27b;</i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        @if (Model.Comments.Count() == 0)
+                        {
+                            <div id="no-comments">
+                                <p class="text-center text-light">There is no comments for this post</p>
+                                @if (isSignIn)
+                                {
+                                    <p class="text-center text-light">Be the first to comment</p>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="comments-section">
+                                @foreach (var comment in Model.Comments)
+                                {
+                                    <partial name="_CommentPartial" model="comment" />
+                                }
+                            </div>
+                        }
+                        @if (isSignIn && !User.IsAdministrator())
+                        {
+                            <div id="comment" class="input-group">
+                                <textarea id="message" class="form-control" name="message" placeholder="Add comment" rows="2"></textarea>
+                                <div class="input-group-append">
+                                    <button onclick="Action('@ViewBag.IsCreator')" class="btn btn-outline-secondary comment-edit-btns">Comment</button>
+                                </div>
+                            </div>
+                            <span hidden id="validator" class="small text-light">Message shoud be contains at least 2 symbols</span>
+                        }
+                        else
+                        {
+                            <p class="text-center text-light">You must be logged in to comment</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="/js/PhotosFunctionalityShared.js"></script>
+
+    <script src="/js/ShowPhoto.js"></script>
+
+    <script src="/js/ClosePhotoView.js"></script>
+
+    <script src="/js/PreviousAndNextPhoto.js"></script>
+
+    <script src="~/lib/signalr/dist/browser/signalr.js"></script>
+
+    <script src="/js/CommentsHub.js"></script>
+
+    <script src="/js/LikesHub.js"></script>
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <script src="/js/PostIdConstant.js"></script>
+
+    <script src="/js/LikeUnlikePost.js"></script>
+
+    <script src="/js/PrepareAndCancelEdit.js"></script>
+
+    <script src="/js/CreateAndEditComment.js"></script>
+
+    <script src="/js/DeleteComment.js"></script>
+
+    <script src="/js/DeletePost.js"></script>
+}

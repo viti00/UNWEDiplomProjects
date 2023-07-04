@@ -1,0 +1,48 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/AllCreateAndEditPages.css" />
+}
+
+
+    <div class="section">
+        <div class="color-overlay"></div>
+        <div class="wrapper col-sm-12 col-md-10 offset-md-1 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <form method="post">
+                <div class="logo">
+                    <img src="~/lib/Images/logo.png" alt="">
+                </div>
+                <div class="text-center mt-4 name">
+                    <h2>Login</h2>
+                </div>
+                <div class="form-group">
+                    <label asp-for=Input.UserName>Username<span class="text-danger">*</span></label>
+                    <input asp-for="Input.UserName" class="form-control" placeholder="example123">
+                    <span asp-validation-for="Input.UserName" class="small text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for=Input.Password>Password<span class="text-danger">*</span></label>
+                    <input asp-for="Input.Password" type="password" autocomplete="new-password" class="form-control">
+                    <span asp-validation-for="Input.Password" class="small text-danger"></span>
+                </div>
+                <a asp-page="ForgotPassword" style="color: black">Forgot password?</a>
+
+                <button type="submit" class="btn custom-btn">Login</button>
+            </form>
+            <div style="height: 100%" class="text-center mt-3">
+                <a asp-page="Register" style="color:black;">Create Account</a>
+            </div>
+             
+        </div>
+
+    </div>
+
+    @section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

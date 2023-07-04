@@ -1,0 +1,166 @@
+﻿@page
+@model VBoutique.Pages.ShoppingCarts.InfoModel
+@inject ApplicationDbContext _context;
+
+@{
+    ViewData["Title"] = "Info";
+}
+@section Styles{
+    <link rel="stylesheet" href="/css/CartInfo.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+
+}
+@if(Model.ShoppingCart != null && Model.ShoppingCart.ShoppingCartItems.Count > 0)
+{
+
+<section class="h-100 gradient-custom">
+    <div class="container py-5">
+        <div class="row d-flex justify-content-center my-4">
+            <div class="col-md-8">
+                <div class="card mb-4" style="background-color: #fa9cc3; border-radius:5px; border: 1px solid black">
+                    <div class="card-body">
+                        @foreach (var item in Model.ShoppingCart.ShoppingCartItems)
+                        {
+                            <div class="row">
+                                <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
+                                    <div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
+                                        <img src="@item.Product.ImageUrl"
+                                             class="w-100" />
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-5 col-md-6 mb-4 mb-lg-0">
+                                    <p><strong>@item.Product.Make - @item.Product.Model</strong></p>
+                                    <h5 class="colors">
+                                        @{
+                                            string color = null;
+                                            if (item.Product is Shoe productShoe)
+                                            {
+                                                color = _context.Colors.FirstOrDefault(x => x.Id == productShoe.ColorId).ColorNameEn.ToLower();
+                                            }
+                                            else if (item.Product is Bag productBag)
+                                            {
+                                                color = _context.Colors.FirstOrDefault(x => x.Id == productBag.ColorId).ColorNameEn.ToLower();
+                                            }
+                                        }
+                                        
+                                        Цвят:
+                                        <span class="color" style="background-color: @color;"></span>
+                                    </h5>
+                                    @if (Model.ShoppingCart.IsActive == true)
+                                    {
+                                            <a asp-page="/ShoppingCarts/RemoveFromCart" asp-route-id="@item.ProductId" asp-page-handler="Delete" onclick="return Confirm();" class="btn btn-danger" title="Изтрий"><i class="fa fa-trash"></i></a>
+
+                                    }
+                                    <a asp-page="/Products/Details" asp-route-id="@item.ProductId" asp-route-type="@(item.Product is Shoe?"Shoes":"Bags")" class="btn btn-primary" title="Виж">
+                                        <i class="fas fa-search"></i>
+                                    </a>
+                                </div>
+
+                                <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                                    <div class="d-flex mb-4" style="max-width: 300px">
+
+                                        <div class="form-outline">
+                                            @if(item.Product is Bag)
+                                            {
+                                                <label class="form-label" for="form1">Брой: @item.ProductCount</label>
+                                            }
+                                            else if(item.Product is Shoe)
+                                            {
+                                                
+                                                @if(item.Size35Count > 0)
+                                                {
+                                                    <label class="form-label" for="form1">№35 Брой: @item.Size35Count</label>
+                                                    <br />
+                                                }
+                                                @if (item.Size36Count > 0)
+                                                {
+                                                    <label class="form-label" for="form1">№36 Брой: @item.Size36Count</label>
+                                                    <br />
+                                                }
+                                                @if (item.Size37Count > 0)
+                                                {
+                                                    <label class="form-label" for="form1">№37 Брой: @item.Size37Count</label>
+                                                    <br />
+                                                }
+                                                @if (item.Size38Count > 0)
+                                                {
+                                                    <label class="form-label" for="form1">№38 Брой: @item.Size38Count</label>
+                                                    <br />
+                                                }
+                                                @if (item.Size39Count > 0)
+                                                {
+                                                    <label class="form-label" for="form1">№39 Брой: @item.Size39Count</label>
+                                                    <br />
+                                                }
+                                                @if (item.Size40Count > 0)
+                                                {
+                                                    <label class="form-label" for="form1">№40 Брой: @item.Size40Count</label>
+                                                    <br />
+                                                }
+                                                @if (item.Size41Count > 0)
+                                                {
+                                                    <label class="form-label" for="form1">№41 Брой: @item.Size41Count</label>
+                                                    <br />
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                    <p class="text-start text-md-center">
+                                        <strong>Ед. цена: @item.Product.Price.ToString("f2") лева</strong>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <hr class="my-4" />
+                        }
+                        
+                    </div>
+                </div>
+                
+            </div>
+            <div class="col-md-4">
+                <div class="card mb-4" style="background-color: #fa9cc3; border-radius:5px; border: 1px solid black">
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3" style="background-color: #fa9cc3; border-radius:5px; border: 1px solid black">
+                                <div>
+                                    <strong>Всичко общо:</strong>
+                                </div>
+                                <span><strong>@Model.TotalPrice.ToString("f2") лева</strong></span>
+                            </li>
+                        </ul>
+                        <div class="row">
+                            @if(Model.ShoppingCart.IsActive == true)
+                            {
+                                <div class="col-md-6 offset-md-3">
+                                    <a asp-page="/Orders/Create" class="btn btn-primary">Направи поръчка</a>
+                                </div>
+                            }
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+}
+else{
+    <h5 class="text-center">Количката е празна</h5>
+}
+
+@section Scripts{
+    <script>
+        function Confirm() {
+            if (confirm("Желаете ли да премахнете този продукт?")) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    </script>
+}

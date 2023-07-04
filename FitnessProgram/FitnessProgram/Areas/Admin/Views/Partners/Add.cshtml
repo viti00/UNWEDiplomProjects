@@ -1,0 +1,17 @@
+﻿@model PartnerFormModel
+
+@{
+    ViewBag.Title = "Add Partner";
+    ViewBag.ButtonName = "Post";
+}
+
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/AllCreateAndEditPages.css" />
+}
+<partial name="_PartnersAddAndEditPartial" model="@Model"/>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
+

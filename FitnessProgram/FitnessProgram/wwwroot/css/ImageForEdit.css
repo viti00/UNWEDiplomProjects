@@ -1,0 +1,100 @@
+﻿﻿body::-webkit-scrollbar {
+    display: none;
+    -ms-overflow-style: none;
+}
+
+
+#edit-image:hover {
+    cursor: pointer;
+}
+
+.table-section {
+    position: relative;
+}
+
+
+.btn-form {
+    margin: 3px 3px 3px 3px;
+}
+
+.table-dark {
+    --bs-table-bg: dimgray;
+}
+
+.table-section {
+    width: 90%;
+}
+
+@media only screen and (max-width:1200px) {
+    .table {
+        max-width: 100%;
+    }
+}
+
+th {
+    text-align: center;
+}
+
+td {
+    text-align: center;
+}
+
+@media only screen and (max-width:800px) {
+    .table {
+        max-width: 100%;
+    }
+
+    td {
+        font-size: 10px;
+    }
+
+    th {
+        font-size: 10px;
+    }
+}
+
+.img {
+    max-width: 3rem;
+    max-height: 3rem;
+}
+
+    .img:hover {
+        transform: scale(10);
+        margin-top: 50%;
+        margin-right: 150%
+    }
+
+.a-custom {
+    text-decoration: none;
+    width: 1.5rem;
+    height: 1.5rem;
+    font-size: 20px;
+    border-radius: 10px;
+    color: black;
+}
+
+    .a-custom:hover {
+        cursor: pointer;
+        color: white;
+    }
+
+.buttons-container {
+    margin-top: 5px;
+    max-width: 90%;
+    margin-top: 5px;
+}
+
+.delete-all {
+    margin-bottom: 5px;
+    border-radius: 10px;
+    color: black;
+    text-decoration: none;
+}
+
+    .delete-all:hover {
+        cursor: pointer;
+    }
+
+.display-none{
+    display: none;
+}

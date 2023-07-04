@@ -1,0 +1,107 @@
+﻿@inject SignInManager<IdentityUser> SignInManager
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - FishermanMarket</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/FishermanMarket.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    <header>
+        <nav style="background-color: #d1e6dc" class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-page="/Index">FishermanMarket</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-page="/Products/Index" asp-route-filter="Въдици">Въдици</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-page="/Products/Index" asp-route-filter="Макари">Макари</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-page="/Products/Index" asp-route-filter="Влакна">Влакна</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-page="/Products/Index" asp-route-filter="Примамки">Примамки</a>
+                        </li>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-page="/Products/Create">Създаване на продукт</a>
+                            </li>
+                        }
+                        @if (SignInManager.IsSignedIn(User) && (!User.IsInRole("Admin") && !User.IsInRole("OrdersSender")))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-page="/Requests/Create">Заявка за гид</a>
+                            </li>
+                        }
+
+                    </ul>
+
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        @if (User.IsInRole("Admin") || User.IsInRole("OrdersSender"))
+                        {
+                            <a class="nav-link text-dark" asp-page="/Orders/Index">Поръчки</a>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a class="nav-link text-dark" asp-page="/Requests/Index">Заявки</a>
+                            }
+                        }
+                        else
+                        {
+                            <a class="nav-link text-dark" asp-page="/Orders/Index">Мои поръчки</a>
+                            <a class="nav-link text-dark" asp-page="/Requests/Index">Мои заявки</a>
+                            <a class="position-relative" asp-page="/Bags/Details">
+
+                                <i class="fa fa-shopping-bag fa-lg"></i>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    <span id="bag-count">0</span>
+                                </span>
+
+
+                            </a>
+                        }
+                    }
+
+
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+<footer class="footer text-muted" style="background-color: #d1e6dc">
+    <div class="container">
+        &copy; @DateTime.Now.Year - FishermanMarket
+    </div>
+    <script src="~/js/BagCount.js"></script>
+    <script>
+        GetCount();
+    </script>
+</footer>
+</html>

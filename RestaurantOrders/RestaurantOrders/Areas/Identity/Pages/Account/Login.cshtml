@@ -1,0 +1,47 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/AllPages.css"/>
+    <link rel="stylesheet" href="~/css/Forms.css"/>
+}
+
+<div class="row">
+    <div class="col-md-4 offset-md-4 form">
+        <section>
+            <form id="account" method="post">
+                <div class="text-center mb-2">
+                    <h4>Влизане</h4>
+                    <hr />
+                </div>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-floating mb-2">
+                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
+                    <label asp-for="Input.Email" class="form-label">Имейл</label>
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-2">
+                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" />
+                    <label asp-for="Input.Password" class="form-label">Парола</label>
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+                <div class="text-center mb-2 mt-2">
+                    <button id="login-submit" type="submit" class="w-50 btn btn-lg btn-warning">Влизане</button>
+                </div>
+                <div class="text-center">
+                    <p>
+                        <a style="color: black" asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Регистрирайте се от тук</a>
+                    </p>
+                </div>
+            </form>
+        </section>
+    </div>
+</div> 
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

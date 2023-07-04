@@ -1,0 +1,60 @@
+﻿@page
+@model SteliTour.Pages.Requests.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="/css/FormPages.css" />
+    <link rel="stylesheet" href="~/css/BG.css" />
+}
+
+<div class="row bg-blue">
+    <div class="col-md-4 offset-md-0 form-wrapper">
+        <form method="post">
+            <div class="text-center">
+                <h5>Редактиране на запитването</h5>
+            </div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Request.Id" />
+            <div class="form-group text-center">
+                <label asp-for="Request.Name" class="control-label">Име и фамилия</label>
+                <input asp-for="Request.Name" class="form-control" />
+                <span asp-validation-for="Request.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center">
+                <label asp-for="Request.Phone" class="control-label">Телефон</label>
+                <input asp-for="Request.Phone" class="form-control" />
+                <span asp-validation-for="Request.Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center">
+                <label asp-for="Request.RequestText" class="control-label">Запитване</label>
+                <textarea asp-for="Request.RequestText" class="form-control" rows="7"></textarea>
+                <span asp-validation-for="Request.RequestText" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Request.UserId" class="control-label"></label>
+                <input asp-for="Request.UserId" class="form-control" value="@ViewBag.UserId"/>
+                <span asp-validation-for="Request.UserId" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Request.RequestDate" class="control-label"></label>
+                <input asp-for="Request.RequestDate" class="form-control" />
+                <span asp-validation-for="Request.RequestDate" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Request.Status" class="control-label"></label>
+                <input asp-for="Request.Status" class="form-control" />
+                <span asp-validation-for="Request.Status" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center mb-2 mt-2">
+                <input type="submit" value="Запази промените" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

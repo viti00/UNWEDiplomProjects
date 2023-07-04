@@ -1,0 +1,102 @@
+﻿.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+}
+
+.datepicker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.timeslots {
+    display: flex;
+    flex-direction: column;
+}
+
+.timeslot {
+    border-radius: 8px;
+    border: 1px solid gray;
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+    .timeslot:active {
+        background-color: gray;
+    }
+
+    .timeslot.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+.display-none{
+    display: none;
+}
+.disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+    background-color: red !important;
+}
+
+    body {
+        background-color: #242426;
+    }
+span{
+    color: black;
+    display: block;
+}
+#datepicker {
+    background-color: #242426;
+    color: white;
+}
+    #datepicker::-webkit-calendar-picker-indicator {
+        filter: invert(1);
+    }
+.timeslots{
+    padding: 5px 5px 5px 5px;
+    background-color: dimgrey;
+    width: 300px;
+    height: auto;
+    border-radius: 10px;
+}
+.timeslot{
+    background-color: yellow;
+    color: black;
+}
+
+
+#reservationModal .modal-content {
+    background-color: dimgray;
+}
+
+#reservationModal .btn-primary {
+    background-color: yellow;
+    color: black;
+    margin-top: 5px;
+}
+.close{
+    background-color: red;
+}
+
+#reservationModal .modal-dialog {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.export-btn {
+    background-color: #4CAF50;
+    border: none;
+    color: #fff;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    border-radius: 4px;
+}

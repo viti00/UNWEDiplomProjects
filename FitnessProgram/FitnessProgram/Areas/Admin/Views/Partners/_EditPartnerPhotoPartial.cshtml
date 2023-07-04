@@ -1,0 +1,26 @@
+﻿@model PartnerPhoto
+
+<div class="buttons-container">
+    <a onclick="Hide()" class="btn-danger a-custom">X</a>
+</div>
+
+<div class="table-section">
+    <table class="table table-hover table-dark">
+        <thead>
+            <tr>
+                <th scope="col">File name</th>
+                <th scope="col">File</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody id="table">
+                <tr data-id="@Model.PartnerId">
+                    <td style="font-size: 12px">@Model.Description</td>
+                    <td><img class="img" src="@String.Format("data:image/gif;base64,{0}", Convert.ToBase64String(Model.Bytes))"></td>
+                    <td>
+                        <a onclick="Remove(@Model.Id, @Model.PartnerId)" title="Delete" class="btn-form btn-danger"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
+        </tbody>
+    </table>
+</div>

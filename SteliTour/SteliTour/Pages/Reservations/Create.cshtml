@@ -1,0 +1,88 @@
+﻿@page
+@model SteliTour.Pages.Reservations.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="/css/FormPages.css" />
+    <link rel="stylesheet" href="~/css/BG.css" />
+}
+
+<div class="row bg-blue">
+    <div class="col-md-4 offset-md-0 form-wrapper">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="text-center">
+                <h5>Резервиране на почивка</h5>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Reservation.UserId" class="control-label"></label>
+                <input asp-for="Reservation.UserId" class ="form-control" value="@ViewBag.UserId"/>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Reservation.DestinationId" class="control-label"></label>
+                <input asp-for="Reservation.DestinationId" class ="form-control" value="@ViewBag.DestinationId"/>
+            </div>
+            <div class="form-group text-center">
+                <label asp-for="Reservation.FirstName" class="control-label">Име</label>
+                <input asp-for="Reservation.FirstName" class="form-control" />
+                <span asp-validation-for="Reservation.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center">
+                <label asp-for="Reservation.LastName" class="control-label">Фамилия</label>
+                <input asp-for="Reservation.LastName" class="form-control" />
+                <span asp-validation-for="Reservation.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center">
+                <label asp-for="Reservation.EGN" class="control-label">ЕГН</label>
+                <input asp-for="Reservation.EGN" class="form-control" />
+                <span asp-validation-for="Reservation.EGN" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center">
+                <label asp-for="Reservation.PhoneNumber" class="control-label">Телефон за контакт</label>
+                <input asp-for="Reservation.PhoneNumber" class="form-control" />
+                <span asp-validation-for="Reservation.PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center">
+                <label asp-for="Reservation.AdultCount" class="control-label">Брой възрастни</label>
+                <input asp-for="Reservation.AdultCount" type="number" min="1" class="form-control" value="0" />
+                <span asp-validation-for="Reservation.AdultCount" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center">
+                <label asp-for="Reservation.KidsCount" class="control-label">Брой деца</label>
+                <input asp-for="Reservation.KidsCount" type="number" class="form-control" value="0" />
+                <span asp-validation-for="Reservation.KidsCount" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center">
+                <label asp-for="Reservation.Under2YearsKidsCount" class="control-label">Брой деца под 2 години</label>
+                <input asp-for="Reservation.Under2YearsKidsCount" type="number" class="form-control" value="0" />
+                <span asp-validation-for="Reservation.Under2YearsKidsCount" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Reservation.Payed" class="control-label"></label>
+                <input asp-for="Reservation.Payed" class="form-control" />
+                <span asp-validation-for="Reservation.Payed" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Reservation.Remainign" class="control-label"></label>
+                <input asp-for="Reservation.Remainign" class="form-control" />
+                <span asp-validation-for="Reservation.Remainign" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Reservation.DateOfReservation" class="control-label"></label>
+                <input asp-for="Reservation.DateOfReservation" class="form-control" />
+                <span asp-validation-for="Reservation.DateOfReservation" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center mt-3 mb-3">
+                <input type="submit" value="Резервивай" onclick="return Check('@ViewBag.DestinationId');" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="/js/Check.js"></script>
+}

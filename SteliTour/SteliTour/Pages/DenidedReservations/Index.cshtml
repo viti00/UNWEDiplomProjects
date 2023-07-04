@@ -1,0 +1,78 @@
+﻿@page
+@model SteliTour.Pages.DenidedReservations.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/BG.css" />
+}
+
+<div class="text-center">
+    <form asp-page-handler="Export">
+        <button class="btn btn-success" asp-page-handler="Export">Изтеглете пълната информация</button>
+    </form>
+</div>
+   
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DenidedReservation[0].UserEmail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DenidedReservation[0].Destination)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DenidedReservation[0].FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DenidedReservation[0].LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DenidedReservation[0].EGN)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DenidedReservation[0].PhoneNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DenidedReservation[0].Payed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DenidedReservation[0].Remainign)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.DenidedReservation) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Destination)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EGN)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
+            </td>
+            
+            <td>
+                @Html.DisplayFor(modelItem => item.Payed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Remainign)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

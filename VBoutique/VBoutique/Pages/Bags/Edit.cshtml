@@ -1,0 +1,69 @@
+﻿@page
+@model VBoutique.Pages.Bags.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="row">
+    <div class="col-md-4 offset-md-4" style="background-color: #fa9cc3; border-radius:5px; border: 1px solid black">
+        <form method="post">
+            <div class="text-center mb-2 mt-2">
+                <h5>Редактиране на чанти</h5>
+            </div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+           
+            
+            <input type="hidden" asp-for="Bag.Id" />
+            <div class="form-group">
+                <label asp-for="Bag.Make" class="control-label">Марка</label>
+                <input asp-for="Bag.Make" class="form-control" />
+                <span asp-validation-for="Bag.Make" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Bag.Model" class="control-label">Модел</label>
+                <input asp-for="Bag.Model" class="form-control" />
+                <span asp-validation-for="Bag.Model" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Bag.ColorId" class="control-label"></label>
+                <select asp-for="Bag.ColorId" class="form-control" asp-items="ViewBag.ColorId"></select>
+                <span asp-validation-for="Bag.ColorId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Bag.ProductDescription" class="control-label">Описание</label>
+                <textarea asp-for="Bag.ProductDescription" class="form-control" rows="5"></textarea>
+                <span asp-validation-for="Bag.ProductDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Bag.Price" class="control-label">Цена</label>
+                <input asp-for="Bag.Price" class="form-control" />
+                <span asp-validation-for="Bag.Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Bag.ImageUrl" class="control-label">Линк към снимка</label>
+                <input asp-for="Bag.ImageUrl" class="form-control" />
+                <span asp-validation-for="Bag.ImageUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Bag.AvailableCount" class="control-label">Налични бройки</label>
+                <input asp-for="Bag.AvailableCount" class="form-control" />
+                <span asp-validation-for="Bag.AvailableCount" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Bag.LastModified_19118155" class="control-label"></label>
+                <input asp-for="Bag.LastModified_19118155" class="form-control" />
+                <span asp-validation-for="Bag.LastModified_19118155" class="text-danger"></span>
+            </div>
+
+            <div class="form-group text-center mb-2 mt-2">
+                <input type="submit" value="Запази" class="btn" style="background-color: #feb6c0" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

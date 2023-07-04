@@ -1,0 +1,31 @@
+﻿.table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    border: 1px solid black;
+}
+
+    .table tr {
+        border-bottom: 1px solid black;
+    }
+
+    .table th,
+    .table td {
+        border: none;
+        border-bottom: 1px solid black;
+        padding: 8px;
+    }
+
+        .table th:first-child,
+        .table td:first-child {
+            border-left: 1px solid black;
+        }
+
+        .table th:last-child,
+        .table td:last-child {
+            border-right: 1px solid black;
+        }
+
+    .table tr:last-child {
+        border-bottom: none;
+    }

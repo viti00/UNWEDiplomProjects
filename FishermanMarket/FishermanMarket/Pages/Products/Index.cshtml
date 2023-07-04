@@ -1,0 +1,72 @@
+﻿@page
+@model FishermanMarket.Pages.Products.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/ProductsAll.css" />
+    <link rel="stylesheet" href="~/css/BodyColor.css" />
+}
+
+@if (Model.Product == null || Model.Product.Count == 0)
+{
+    <h3 class="text-center">Няма продукти по зададените условия</h3>
+}
+else
+{
+    <div class="row">
+        <form style="margin-bottom: 15px;">
+            <div class="col-md-4 offset-md-4">
+                <div class="form-group text-center">
+                    <label asp-for="Sort" for="sort">Сортиране:</label>
+                    <select style="background-color: yellowgreen;" asp-for="Sort" class="form-control" id="sort">
+                        <option value="0" selected>----------</option>
+                        <option value="1">Цена: от ниска към висока</option>
+                        <option value="2">Цена: от висока към ниска</option>
+                    </select>
+                    <input hidden asp-for="Filter" value="@Model.Filter" />
+                    <input hidden asp-for="CurrentPage" value="@Model.CurrentPage" />
+                </div>
+            </div>
+            <div class="col-md-12 mt-3 button-wrapper text-center">
+                <button style="background-color: yellowgreen; color: black" class="btn">Приложи</button>
+            </div>
+        </form>
+        
+        @foreach (var item in Model.Product)
+        {
+            <div class="col-md-3">
+                <a asp-page="Details" title="Виж" asp-route-id="@item.Id">
+                    <div class="product-box">
+                        <div class="product-img w-100">
+                            <img class="w-100" src="@(item.Image != null ? String.Format("data:image/gif;base64,{0}", Convert.ToBase64String(item.Image.Bytes)):"https://st.depositphotos.com/2934765/53192/v/600/depositphotos_531920820-stock-illustration-photo-available-vector-icon-default.jpg")" alt="@item.Name">
+                        </div>
+                        <div class="product-info">
+                            <h4>@item.Name</h4>
+                            <p class="text-center">Цена: @item.Price лв.</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+        <div class="text-center">
+            @if (Model.CurrentPage > 1)
+            {
+                <a asp-page="/Products/Index" asp-route-sort="@Model.Sort" asp-route-filter="@Model.Filter" asp-route-currentPage="@(Model.CurrentPage-1)" class="btn btn-outline-secondary">&lt;&lt; Назад</a>
+            }
+            <div class="d-inline-block mx-3">Страница @Model.CurrentPage от @Model.EndPage</div>
+            @if (Model.CurrentPage < Model.EndPage)
+            {
+                <a asp-page="/Products/Index" asp-route-sort="@Model.Sort" asp-route-filter="@Model.Filter" asp-route-currentPage="@(Model.CurrentPage+1)" class="btn btn-outline-secondary">Напред &gt;&gt;</a>
+            }
+            
+        </div>
+    </div>
+}
+
+@section Scripts{
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+}
+

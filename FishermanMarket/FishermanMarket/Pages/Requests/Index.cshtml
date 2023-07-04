@@ -1,0 +1,60 @@
+﻿@page
+@model FishermanMarket.Pages.Requests.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    int rowNumber = 1;
+}
+
+@section Styles{
+    <link rel="stylesheet" href="/css/BodyColor.css"/>
+}
+<div class="row">
+    <div class="col-md-4 offset-md-5 mb-5">
+        <form method="post" asp-page-handler="Report">
+            <button class="btn btn-warning">Репорт</button>
+        </form>
+    </div>
+
+</div>
+<table class="table table-success table-striped">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Имейл</th>
+            <th scope="col">Запитване</th>
+            <th scope="col">Дата на запитване</th>
+            <th scope="col">Статус</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Request)
+        {
+            <tr>
+                <th scope="row">@rowNumber</th>
+                <td>@item.User.Email</td>
+                <td>@item.Description</td>
+                <td>@item.RequestDate.ToString("dd/MM/yyyy")</td>
+                <td>@item.Status</td>
+                <td>
+                    @if(item.Status == "Чака отговор" && (User.IsInRole("OrdersSender") || User.IsInRole("Admin")))
+                    {
+                        <form asp-page-handler="EditStatus" asp-route-id="@item.Id">
+                            <button style="background-color: yellowgreen; color: black" class="btn mb-2">Промени статус</button>
+                        </form>
+                    }
+                    @if (!User.IsInRole("OrdersSender") && !User.IsInRole("Admin"))
+                    {
+                        <a asp-page="/Requests/Edit" asp-route-id="@item.Id" class="btn btn-success mb-2">Редактирай</a>
+                    }
+                    <form method="post" asp-page-handler="Delete" asp-route-id="@item.Id">
+                        <button class="btn btn-danger">Изтрий</button>
+                    </form>
+                </td>
+            </tr>
+            rowNumber++;
+        }
+
+    </tbody>
+</table>

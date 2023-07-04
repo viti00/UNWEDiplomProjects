@@ -1,0 +1,83 @@
+﻿@page
+@model FishermanMarket.Pages.Bags.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="/css/BodyColor.css"/>
+}
+
+@if (Model.Bag == null || Model.Bag.Products.Count < 1)
+{
+    <div class="text-center text-dark">
+        <h3>Все още няма продукти</h3>
+    </div>
+    
+}
+else
+{
+    <section class="h-100" style="background-color: #eee;">
+        <div class="container h-100 py-5">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-10">
+
+                    @foreach (var item in Model.Bag.Products)
+                    {
+                        <div class="card rounded-3 mb-4">
+                            <div class="card-body p-4">
+                                <div class="row d-flex justify-content-between align-items-center">
+                                    <div class="col-md-2 col-lg-2 col-xl-2">
+                                        <img style="max-width: 122px; max-height: 92px;" src="@(item.Product.Image != null ? String.Format("data:image/gif;base64,{0}", Convert.ToBase64String(item.Product.Image.Bytes)):"https://st.depositphotos.com/2934765/53192/v/600/depositphotos_531920820-stock-illustration-photo-available-vector-icon-default.jpg")" alt="@item.Product.Name"
+                                             class="img-fluid rounded-3">
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-xl-3">
+                                        <p class="lead fw-normal mb-2">@item.Product.Name</p>
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                                        <button class="btn btn-link px-2 text-dark down">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+
+                                        <input pId="@item.Product.Id" min="0" name="quantity" value="@item.Quantity" type="number"
+                                               class="form-control form-control-sm text-center quantity" />
+
+                                        <button class="btn btn-link px-2 text-dark up">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                                        <h5 id="@item.Product.Id" class="mb-0">Общо: @((item.Product.Price * item.Quantity)) лв.</h5>
+                                    </div>
+
+                                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                        <a asp-page="/Products/Details" title="Виж" asp-route-id="@item.Product.Id" class="btn btn-link"><i class="fas fa-search fa-lg"></i></a>
+                                        <form method="post" asp-page-handler="Delete" asp-route-pId="@item.Product.Id">       
+                                            <button title="Премахни" style="border: none; background-color: white"  class="text-danger"><i class="fas fa-trash fa-lg"></i></button>
+                                        </form>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <div class="card">
+                        <div class="card-body d-flex justify-content-between align-items-center">
+                            <a asp-page="/Orders/Create" style="background-color: yellowgreen;" class="btn btn-lg">Поръчай</a>
+                            <h5 class="m-0">Общо: <span id="price-total">@(Model.Bag.Products.Sum(x => x.Quantity * x.Product.Price)) лв.</span></h5>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+@section Scripts{
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <script src="/js/ChangeSum.js"></script>
+}

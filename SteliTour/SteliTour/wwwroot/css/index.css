@@ -1,0 +1,24 @@
+﻿#message-box {
+    background-color: rgba(165,233,250,0.3);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+    #message-box h1 {
+        font-size: 68px;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 0;
+        font-family: 'Montserrat';
+    }
+
+@media (max-width: 576px) {
+    #message-box h1 {
+        font-size: 24px;
+        font-family: 'Montserrat';
+    }
+}
+
+body{
+    max-height: 100vh !important;
+}

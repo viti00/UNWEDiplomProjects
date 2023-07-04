@@ -1,0 +1,46 @@
+﻿@page
+@model RestaurantOrders.Pages.Requests.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="/css/RequestIndex.css"/>
+}
+
+<div class="row cont">
+    @foreach (var item in Model.Request)
+    {
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">@item.FullName</h5>
+                    <p class="card-text">@item.PhoneNumber</p>
+                    <p class="card-text">Дата на събитието: @item.DateOfEvent.ToString("yyyy-dd-MM")</p>
+                    <div class="text-container">
+                        @foreach (var text in item.RequestText.Split("\n"))
+                        {
+                            <p>@text</p>
+                        }
+                    </div>
+                </div>
+                <div class="buttons text-center">
+                    @if (!User.IsInRole("Cooker") && !User.IsInRole("DeliveryGuy") && !User.IsInRole("Administrator"))
+                    {
+                        <a asp-page="/Requests/Edit" asp-route-id="@item.Id" class="btn btn-primary mb-2">Редактирай</a>
+                    }
+                    <a asp-page="/Requests/Edit" asp-route-type="delete" asp-route-id="@item.Id" onclick="return Confirm('Наистина ли искате да изтриете това запитване?');" class="btn btn-danger mb-2">Изтрий</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts{
+    <script>
+        function Confirm(message) {
+            confirm(message);
+        }
+    </script>
+}

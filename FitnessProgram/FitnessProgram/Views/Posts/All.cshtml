@@ -1,0 +1,64 @@
+﻿@using FitnessProgram.Data.Models
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+@model AllPostsQueryModel
+
+@section Styles{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/css/PostsPartnersBestResultsShared.css" />
+}
+
+    @{
+    var isSignIn = SignInManager.IsSignedIn(User);
+}
+
+@{
+    ViewBag.Title = "Posts";
+}
+
+<div class="body-section">
+
+    <div class="color-overlay"></div>
+
+    <div class="elements">
+        <partial name="_SearchSectionPartial" model="Model"/>
+        @if (isSignIn && !User.IsAdministrator())
+        {
+            <div class="btn-create-container">
+                <a asp-controller="Posts" asp-action="Create" class="btn create-btn">Create Post</a>
+            </div>
+        }
+        <div class="row res-container">
+            <div class="row post-cards">
+                @if(Model.Posts.Count() == 0 && !string.IsNullOrWhiteSpace(Model.SearchTerm))
+                {
+                    <div class="no-post-container">
+                        <h2>There is no posts by the given criteria</h2>
+                    </div>
+                }
+                else if (Model.Posts.Count() == 0)
+                {
+
+                    <div class="no-post-container">
+                        <h2>There is no post created</h2>
+                        @if (isSignIn)
+                        {
+                            <span>Be the first tо posting</span>
+                        }
+                        else
+                        {
+                            <span>You must be logged in to post</span>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="col-sm-12 col-md-12 col-lg-10 offset-lg-1 col-xl-10 offset-xl-1 elements-container">
+                        <partial name="_PostsContainerPartial" model="Model" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

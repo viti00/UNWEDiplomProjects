@@ -1,0 +1,42 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        if(!User.IsInRole("Admin") && !User.IsInRole("OrdersManager") && !User.IsInRole("ProductsManager"))
+        {
+            <li class="nav-item">
+                <a class="nav-link text-light position-relative" asp-page="/ShoppingCarts/Info">
+                    <i style="font-size:24px; color: black" class="fa">&#xf07a;</i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill" style="background-color: black">
+                        <span style="color: red" id="cartCount">0</span>
+                        <span class="visually-hidden">cart items</span>
+                    </span>
+                </a>
+            </li>
+        }
+        @if (!User.IsInRole("ProductsManager"))
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-page="/Orders/Index">Поръчки</a>
+            </li>
+        }
+       
+        <li class="nav-item">
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                <button type="submit" class="nav-link btn btn-link text-dark">Излизане</button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Регистрация</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Влизане</a>
+        </li>
+    }
+</ul>

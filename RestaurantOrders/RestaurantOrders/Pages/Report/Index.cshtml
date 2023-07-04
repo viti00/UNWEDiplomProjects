@@ -1,0 +1,51 @@
+﻿@page
+@model RestaurantOrders.Pages.Report.IndexModel
+@{
+    ViewData["Title"] = "Report";
+    int count = 1;
+}
+
+<div class="row">
+    <div class="col-md-4 offset-md-5 mb-5">
+        <form method="post" asp-page-handler="Report">
+            <button class="btn btn-warning">Отчет за деня</button>
+        </form>
+    </div>
+
+</div>
+<div class="row text-center">
+    <div class="col-md-12">
+        <h5>Оборот: @Model.Total.ToString("f2") лв.</h5>
+    </div>
+</div>
+<table class="table table-warning table-striped">
+    <thead>
+        <tr>
+            <th scope="col">№</th>
+            <th scope="col">Поръчка №</th>
+            <th scope="col">Дата на поръчка</th>
+            <th scope="col">Детайли</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Orders)
+        {
+            <tr>
+                
+                <td>@count</td>
+                <td>@item.Id</td>
+                <td>@item.OrderDate.ToString("dd/MM/yyyy")</td>
+                <th scope="row"><a asp-page="/Bags/Details" title="Виж" asp-route-bId="@item.BagId" asp-route-type="ordered" class="btn btn-link"><i class="fa fa-search fa-lg"></i></a></th>
+            </tr>
+
+            count++;
+        }
+
+    </tbody>
+</table>
+
+@section Scripts{
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+}
+
+

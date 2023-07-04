@@ -1,0 +1,53 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        @if (!User.IsInRole("Administrator") && !User.IsInRole("OrdersManager"))
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-page="/Reviews/Index" asp-route-type="My">Мои мнения</a>
+            </li>
+        }
+        
+        @if (User.IsInRole("Administrator"))
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-page="/Reviews/Index" asp-route-type="All">Mнения</a>
+            </li>
+        }
+        
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-page="/Orders/Index">Поръчки</a>
+        </li>
+        @if (!User.IsInRole("Administrator") && !User.IsInRole("OrdersManager"))
+        {
+            <li class="nav-item">
+                <a class="nav-link text-light position-relative" asp-page="/Carts/Details">
+                    <i style="color: black" class="fa fa-shopping-cart fa-lg"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill" style="background-color: black">
+                        <span style="color: cyan" id="cartCount">0</span>
+                    </span>
+                </a>
+            </li>
+        }
+       
+        <li class="nav-item">
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                <button type="submit" class="nav-link btn btn-link text-dark">Излез</button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Регистрация</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Влез</a>
+        </li>
+    }
+</ul>

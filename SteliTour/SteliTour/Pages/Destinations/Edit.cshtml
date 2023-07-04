@@ -1,0 +1,74 @@
+﻿@page
+@model SteliTour.Pages.Destinations.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="/css/FormPages.css" />
+    <link rel="stylesheet" href="~/css/BG.css" />
+}
+<div class="row bg-blue">
+    <div class="col-md-4 offset-md-0 form-wrapper">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Destination.Id" />
+            <div class="form-group">
+                <label asp-for="Destination.Name" class="control-label">Наименование</label>
+                <input asp-for="Destination.Name" class="form-control" />
+                <span asp-validation-for="Destination.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Destination.Description" class="control-label">Описане</label>
+                <textarea asp-for="Destination.Description" class="form-control" rows="7"></textarea>
+                <span asp-validation-for="Destination.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Destination.AdultPrice" class="control-label">Цена за възрастен</label>
+                <input asp-for="Destination.AdultPrice" type="number" class="form-control" />
+                <span asp-validation-for="Destination.AdultPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Destination.KidsPrice" class="control-label">Цена за дете</label>
+                <input asp-for="Destination.KidsPrice" type="number" class="form-control" />
+                <span asp-validation-for="Destination.KidsPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Destination.Under2YearsKidsPrice" class="control-label">Цена за деца под 2 години</label>
+                <input asp-for="Destination.Under2YearsKidsPrice" type="number" class="form-control" />
+                <span asp-validation-for="Destination.Under2YearsKidsPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Destination.StartDate" class="control-label">Дата на заминаване</label>
+                <input asp-for="Destination.StartDate" class="form-control" value="@Model.Destination.StartDate.ToString("yyyy-MM-dd")" />
+                <span asp-validation-for="Destination.StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Destination.EndDate" class="control-label">Дата на връщане</label>
+                <input asp-for="Destination.EndDate" class="form-control" value="@Model.Destination.EndDate.ToString("yyyy-MM-dd")" />
+                <span asp-validation-for="Destination.EndDate" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center">
+                <label asp-for="Destination.ImageUrl" class="control-label">Линк към снимка за публикацията</label>
+                <input asp-for="Destination.ImageUrl" class="form-control" />
+                <span asp-validation-for="Destination.ImageUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center">
+                <label asp-for="Destination.HotelSiteUrl" class="control-label">Линк към хотела</label>
+                <input asp-for="Destination.HotelSiteUrl" class="form-control" />
+                <span asp-validation-for="Destination.HotelSiteUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center" hidden>
+                <input asp-for="Destination.Status" class="form-control" value="@Model.Destination.Status"/>
+            </div>
+            <div class="form-group text-center mt-3 mb-3">
+                <input type="submit" value="Запази промените" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

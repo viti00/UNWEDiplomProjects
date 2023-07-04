@@ -1,0 +1,55 @@
+﻿@page
+@model RestaurantOrders.Pages.Users.AddModel
+@{
+    ViewData["Title"] = "UsersAdd";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/AllPages.css" />
+    <link rel="stylesheet" href="~/css/Forms.css" />
+}
+<div class="row">
+    <div class="col-md-4 offset-md-4 form">
+        <form id="registerForm" method="post">
+            <div class="text-center mb-2">
+                <h4>Добавяне на работник</h4>
+                <hr />
+            </div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-floating mb-2">
+                <input asp-for="Email" class="form-control" autocomplete="username" aria-required="true" />
+                <label asp-for="Email">Имейл</label>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-2">
+                <input asp-for="Password" class="form-control" type="password" autocomplete="new-password" aria-required="true" />
+                <label asp-for="Password">Парола</label>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-2">
+                <input asp-for="ConfirmPassword" class="form-control" type="password" autocomplete="new-password" aria-required="true" />
+                <label asp-for="ConfirmPassword">Повтори парола</label>
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-2">
+                <select asp-for="Role" class="form-control" aria-required="true" asp-items="ViewBag.Roles"></select>
+                <label asp-for="Role">Роля</label>
+                <span asp-validation-for="Role" class="text-danger"></span>
+            </div>
+
+            <div class="text-danger">
+                @Html.ValidationMessage("Exist")
+            </div>
+            <div class="text-center mb-2 mt-2">
+                <button id="registerSubmit" type="submit" class="w-50 btn btn-lg btn-warning">Добавяне</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

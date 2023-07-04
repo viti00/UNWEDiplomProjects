@@ -1,0 +1,12 @@
+﻿.close{
+    background-color: red !important;
+}
+
+.modal-content {
+    background-color: rgba(165,233,250,1) !important;
+}
+
+#input{
+    max-width: 150px;
+    margin-left: 35%;
+}

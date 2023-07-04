@@ -1,0 +1,33 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.nav-item{
+    font-size: 15px;
+}
+@font-face {
+    font-family: 'Curlz MT';
+    src: url('path/to/curlzmt.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+#agency {
+    font-family: 'Curlz MT', cursive;
+    font-size: 78px;
+}

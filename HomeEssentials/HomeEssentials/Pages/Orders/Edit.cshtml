@@ -1,0 +1,65 @@
+﻿@page
+@model HomeEssentials.Pages.Orders.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="text-center">
+    <h1>Редактиране на поръчка</h1>
+</div>
+<div class="row">
+    <div class="col-md-4 offset-md-4" style="background-color: #07cde0; border-radius: 5px; border: 1px solid black">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Order.Id" />
+            <div class="form-group" hidden>
+                <label asp-for="Order.CartId" class="control-label"></label>
+                <input asp-for="Order.CartId" class="form-control" />
+                <span asp-validation-for="Order.CartId" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Order.UserId" class="control-label"></label>
+                <input asp-for="Order.UserId" class="form-control"/>
+                <span asp-validation-for="Order.UserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Order.FirstName" class="control-label">Име</label>
+                <input asp-for="Order.FirstName" class="form-control" />
+                <span asp-validation-for="Order.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Order.LastName" class="control-label">Фамилия</label>
+                <input asp-for="Order.LastName" class="form-control" />
+                <span asp-validation-for="Order.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Order.Phone" class="control-label">Телефон</label>
+                <input asp-for="Order.Phone" class="form-control" />
+                <span asp-validation-for="Order.Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Order.Address" class="control-label">Адрес</label>
+                <input asp-for="Order.Address" class="form-control" />
+                <span asp-validation-for="Order.Address" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Order.CreatedOn" class="control-label"></label>
+                <input asp-for="Order.CreatedOn" class="form-control" />
+                <span asp-validation-for="Order.CreatedOn" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Order.LastModified_19118075" class="control-label"></label>
+                <input asp-for="Order.LastModified_19118075" class="form-control" />
+                <span asp-validation-for="Order.LastModified_19118075" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center mb-2 mt-2">
+                <input type="submit" value="Запазване на промените" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

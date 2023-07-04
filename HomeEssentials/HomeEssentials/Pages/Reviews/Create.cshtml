@@ -1,0 +1,57 @@
+﻿@page
+@model HomeEssentials.Pages.Reviews.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="text-center">
+    <h1>Мнение за продукт</h1>
+</div>
+<div class="row">
+    <div class="col-md-4 offset-md-4" style="background-color: #07cde0; border-radius: 5px; border: 1px solid black">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Review.Grade" class="control-label">Оценка</label>
+                <select asp-for="Review.Grade" class="form-control" asp-items="ViewBag.Grade"></select>
+                <span asp-validation-for="Review.Grade" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Review.Title" class="control-label">Заглавие</label>
+                <input asp-for="Review.Title" class="form-control" />
+                <span asp-validation-for="Review.Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Review.Text" class="control-label">Вашето мнение за продукта</label>
+                <textarea asp-for="Review.Text" class="form-control" rows="7"></textarea>
+                <span asp-validation-for="Review.Text" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Review.UserId" class="control-label"></label>
+                <input asp-for="Review.UserId" class ="form-control" value="@ViewBag.UserId"/>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Review.ItemId" class="control-label"></label>
+                <input asp-for="Review.ItemId" class ="form-control" value="@ViewBag.ItemId"/>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Review.CreatedDate" class="control-label"></label>
+                <input asp-for="Review.CreatedDate" class="form-control" />
+                <span asp-validation-for="Review.CreatedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Review.LastModified_19118075" class="control-label"></label>
+                <input asp-for="Review.LastModified_19118075" class="form-control" />
+                <span asp-validation-for="Review.LastModified_19118075" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center mb-2 mt-2">
+                <input type="submit" value="Сподели мнение" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

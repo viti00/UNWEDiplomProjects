@@ -1,0 +1,111 @@
+﻿.card {
+    margin-bottom: 30px;
+    max-height: 600px;
+    overflow: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    background-color: rgba(165,233,250,0.8) !important;
+    border-radius: 10px !important;
+}
+
+.card::-webkit-scrollbar {
+    display: none;
+}
+
+.description-container {
+    max-height: 250px;
+    overflow: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-clip: border-box;
+    border: 0 solid transparent;
+}
+img{
+    max-width: 100%;
+    max-height: 400px;
+    border-radius: 5px;
+}
+
+    .card .card-subtitle {
+        font-weight: 300;
+        margin-bottom: 10px;
+        color: #8898aa;
+    }
+
+.table-product.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f3f8fa !important
+}
+
+.table-product td {
+    border-top: 0px solid #dee2e6 !important;
+    color: #728299 !important;
+}
+
+.bg-grey {
+    background-color: rgba(69,70,85,0.5);
+    border-radius: 10px;
+}
+
+
+#plane:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
+#hotel:hover {
+    transform: scale(1.1);
+}
+
+#hotel {
+    text-decoration: none;
+    color: black;
+}
+
+.dropbtn {
+    color: white;
+    font-size: 30px;
+    text-align: center;
+    border: none;
+    background-color: rgba(13,233,250,1);
+    color: black;
+    border-radius: 5%;
+}
+
+.dropdown {
+    position: absolute;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 100px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 15px;
+}
+
+    .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}

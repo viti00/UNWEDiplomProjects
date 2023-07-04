@@ -1,0 +1,67 @@
+﻿@page
+@using System.Security.Claims;
+@model PartsShop.Pages.PartReviews.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="row mt-3">
+    @if (Model.PartReview != null && Model.PartReview.Count > 0)
+    {
+        @foreach (var review in Model.PartReview.OrderBy(x => x.LastModified_19118073))
+        {
+            
+            <div class="col-md-6 offset-md-3 mb-3" style="border-radius: 5px; border: 1px solid black">
+                <div class="row justify-content-between">
+                    <div class="row">
+                        <div class="col-md-4 offset-md-4 mt-1">
+                            <a asp-page="/Parts/Details" asp-route-id="@review.PartId" class="btn btn-success">Виж продукта</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4"><p>От: @review.User.UserName</p></div>
+                    <div class="col-md-4"><p>Последна промяна: @review.LastModified_19118073.ToString()</p></div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="text-center" style="height: 100px; overflow: auto; padding: 10px;">
+                        <p>@review.ReviewText</p>
+                    </div>
+                </div>
+                <div class="row justify-content-between mt-3 mb-2">
+                    @if (_signInManager.IsSignedIn(User) && review.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
+                    {
+                        <div class="col-md-4">
+                            <a asp-page="/PartReviews/Edit" asp-route-id="@review.Id" class="btn btn-primary">Редактирай</a>
+                        </div>
+                    }
+                    @if (_signInManager.IsSignedIn(User) && (review.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier) || User.IsInRole("Admin")))
+                    {
+                        <div class="col-md-4">
+                            <a asp-page="/PartReviews/Edit" asp-page-handler="Delete" asp-route-reviewId="@review.Id" onclick="return Confirm();" class="btn btn-danger">Изтрий</a>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <h5 class="text-center">За този продукт все още няма мнения/питания</h5>
+    }
+
+</div>
+@section Scripts{
+    <script>
+        function Confirm() {
+            if (confirm("Желаете ли да изтриете мнението/питането?")) {
+                return true;
+
+            }
+            else {
+                return false;
+            }
+        }
+    </script>
+}

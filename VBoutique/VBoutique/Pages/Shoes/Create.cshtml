@@ -1,0 +1,104 @@
+﻿@page
+@model VBoutique.Pages.Shoes.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="row">
+    <div class="col-md-4 offset-md-4" style="background-color: #fa9cc3; border-radius:5px; border: 1px solid black">
+        <form method="post">
+            <div class="text-center mb-2 mt-2">
+                <h5>Добавяне на обувки</h5>
+            </div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+           
+            <div class="form-group">
+                <label asp-for="Shoe.Make" class="control-label">Марка</label>
+                <input asp-for="Shoe.Make" class="form-control" />
+                <span asp-validation-for="Shoe.Make" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Shoe.Model" class="control-label">Модел</label>
+                <input asp-for="Shoe.Model" class="form-control" />
+                <span asp-validation-for="Shoe.Model" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Shoe.ColorId" class="control-label">Цвят</label>
+                <select asp-for="Shoe.ColorId" class="form-control" asp-items="ViewBag.ColorId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Shoe.ProductDescription" class="control-label">Описание</label>
+                <textarea asp-for="Shoe.ProductDescription" class="form-control" rows="5"></textarea>
+                <span asp-validation-for="Shoe.ProductDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Shoe.ImageUrl" class="control-label">Линк към снимката</label>
+                <input asp-for="Shoe.ImageUrl" class="form-control" />
+                <span asp-validation-for="Shoe.ImageUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Shoe.Price" class="control-label">Цена</label>
+                <input asp-for="Shoe.Price" style="text-align: right" class="form-control" />
+                <span asp-validation-for="Shoe.Price" class="text-danger"></span>
+            </div>
+            <div class="row mb-3 text-center">
+                <label>Въведе наличните бройки за всеки размер</label>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <label asp-for="Size35Count" class="control-label">35№</label>
+                    <input asp-for="Size35Count" style="text-align: right" class="form-control" />
+                    <span asp-validation-for="Size35Count" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="Size36Count" class="control-label">36№</label>
+                    <input asp-for="Size36Count" style="text-align: right" class="form-control" />
+                    <span asp-validation-for="Size36Count" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="Size37Count" class="control-label">37№</label>
+                    <input asp-for="Size37Count" style="text-align: right" class="form-control" />
+                    <span asp-validation-for="Size37Count" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label asp-for="Size38Count" class="control-label">38№</label>
+                    <input asp-for="Size38Count" style="text-align: right" class="form-control" />
+                    <span asp-validation-for="Size38Count" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="Size39Count" class="control-label">39№</label>
+                    <input asp-for="Size39Count" style="text-align: right" class="form-control" />
+                    <span asp-validation-for="Size39Count" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label asp-for="Size40Count" class="control-label">40№</label>
+                    <input asp-for="Size40Count" style="text-align: right" class="form-control" />
+                    <span asp-validation-for="Size40Count" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="Size41Count" class="control-label">41№</label>
+                    <input asp-for="Size41Count" style="text-align: right" class="form-control" />
+                    <span asp-validation-for="Size41Count" class="text-danger"></span>
+                </div>
+            </div>
+           
+            <div class="form-group" hidden>
+                <label asp-for="Shoe.LastModified_19118155" class="control-label"></label>
+                <input asp-for="Shoe.LastModified_19118155" class="form-control" />
+                <span asp-validation-for="Shoe.LastModified_19118155" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center mt-2 mb-2">
+                <input type="submit" value="Добави" class="btn" style="background-color: #feb6c0" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

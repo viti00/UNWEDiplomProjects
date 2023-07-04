@@ -1,0 +1,56 @@
+﻿@page
+@model FishermanMarket.Pages.Products.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="/css/BodyColor.css" />
+}
+<div class="row">
+    <div class="col-md-4 offset-md-4" style="background-color: mediumseagreen;border-radius: 10px;">
+        <form method="post" enctype="multipart/form-data">
+            <div class="text-center">
+                <h5 class="text-dark">Редактиране на продукт</h5>
+            </div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Product.Id" />
+            <div class="form-group">
+                <label asp-for="Product.Name" class="control-label">Наименование</label>
+                <input asp-for="Product.Name" class="form-control" />
+                <span asp-validation-for="Product.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.Description" class="control-label">Описание</label>
+                <textarea asp-for="Product.Description" class="form-control" rows="5"></textarea>
+                <span asp-validation-for="Product.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.Price" class="control-label">Цена</label>
+                <input asp-for="Product.Price" class="form-control" />
+                <span asp-validation-for="Product.Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.CategoryId" class="control-label">Категория</label>
+                <select asp-for="Product.CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.File">Снимкa</label>
+                <input asp-for="Product.File" name="file" class="form-control" type="file" />
+                <span asp-validation-for="Product.File" class="small text-danger"></span>
+                <div class="text-danger">
+                    @Html.ValidationMessage("File")
+                </div>
+            </div>
+            <div class="form-group text-center mt-3 mb-3">
+                <input style="background-color: yellowgreen; color: black" type="submit" value="Запази промените" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

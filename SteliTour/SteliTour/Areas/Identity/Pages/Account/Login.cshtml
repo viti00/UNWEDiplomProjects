@@ -1,0 +1,46 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="/css/FormPages.css" />
+    <link rel="stylesheet" href="~/css/BG.css" />
+}
+
+<div class="row bg-blue">
+    <div class="col-md-4 offset-md-0 form-wrapper">
+        <section>
+            <form id="account" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="text-center text-dark">
+                    <h5>Влизане</h5>
+                </div>
+                <div class="form-floating text-center mb-2">
+                    <input asp-for="Input.UserName" class="form-control" autocomplete="username" aria-required="true" />
+                    <label asp-for="Input.UserName" class="form-label">Потребителско име</label>
+                    <span asp-validation-for="Input.UserName" class="text-danger"></span>
+                </div>
+                <div class="form-floating text-center">
+                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" />
+                    <label asp-for="Input.Password" class="form-label">Парола</label>
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+                <div class="text-center mv-2 mt-2">
+                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Влизане</button>
+                </div>
+                <div class="text-center mt-2">
+                    <p>
+                        <a style="color: black" asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Нямате акаунт?</a>
+                    </p>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

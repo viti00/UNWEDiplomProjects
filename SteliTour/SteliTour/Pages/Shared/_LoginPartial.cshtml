@@ -1,0 +1,40 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<ul class="navbar-nav">
+@if (SignInManager.IsSignedIn(User))
+{
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-page="/Reservations/Index" asp-route-type="@(User.IsInRole("Admin") || User.IsInRole("Worker")?"admin":"my")">@(User.IsInRole("Admin") || User.IsInRole("Worker") ? "Резервации" : "Мои резервации")</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-page="/Requests/Index" asp-route-type="@(User.IsInRole("Admin") || User.IsInRole("Worker")?"admin":"my")">@(User.IsInRole("Admin") || User.IsInRole("Worker") ? "Запитвания" : "Мои запитвания")</a>
+        </li>
+        @if (!User.IsInRole("Admin") && !User.IsInRole("Worker"))
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-page="/Reviews/Index" asp-route-type="my">Мои отзиви</a>
+            </li>
+        }
+        
+        
+    <li class="nav-item">
+        <a href="#" disabled style="font-size: 15px; cursor: auto"  class="nav-link text-dark">Здравей, @User.Identity?.Name!</a>
+    </li>
+    <li class="nav-item">
+        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("./Index")" method="post" >
+            <button style="font-size: 15px;" type="submit" class="nav-link btn btn-link text-dark">Излизане</button>
+        </form>
+    </li>
+}
+else
+{
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Регистрация</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Влизане</a>
+    </li>
+}
+</ul>

@@ -1,0 +1,21 @@
+﻿@model PartnerFormModel
+
+@{
+    ViewBag.Title = "Edit Partner";
+    ViewBag.ButtonName = "Edit";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/AllCreateAndEditPages.css" />
+    <link rel="stylesheet" href="~/css/ImageForEdit.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+}
+<partial name="_PartnersAddAndEditPartial" model="@Model"/>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src='~/js/ShowHideImageEditor.js'></script>
+    <script src='~/js/RemovePartnerPhoto.js'></script>
+}
+
+

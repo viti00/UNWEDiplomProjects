@@ -1,0 +1,101 @@
+﻿@page
+@model HomeEssentials.Pages.Orders.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+@if(User.IsInRole("Administrator") || User.IsInRole("OrdersManager"))
+{
+    <div class="row mb-5">
+        <div class="col-md-4 offset-md-5">
+            <a asp-page="/Orders/Index" asp-page-handler="Download" class="btn btn-success">Изтегли данни</a>
+        </div>
+    </div>
+}
+<table class="table table-striped" style="background-color: cyan">
+    <thead>
+        <tr class="text-center">
+            <th scope="col">Детайли</th>
+            <th scope="col">Име</th>
+            <th scope="col">Фамилия</th>
+            <th scope="col">Телефон</th>
+            <th scope="col">Адрес</th>
+            <th scope="col">Дата на поръчката</th>
+            <th scope="col">Статус</th>
+            <th scope="col">Дейстивя</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Order)
+        {
+            <tr class="text-center">
+                <th><a asp-page="/Carts/Details" asp-route-id="@item.CartId" asp-route-type="Ordered">Виж</a></th>
+                <td>@item.FirstName</td>
+                <td>@item.LastName</td>
+                <td>@item.Phone</td>
+                <td style="max-width: 100px;">@item.Address</td>
+                <td>@item.CreatedOn</td>
+                @if (item.Status.Name == "Awaiting")
+                {
+                    <td>Приета</td>
+                }
+                else if (item.Status.Name == "Sent")
+                {
+                    <td>Изпратена</td>
+                }
+                else if (item.Status.Name == "Delivered")
+                {
+                    <td>Доставена</td>
+                }
+                else if (item.Status.Name == "Rejected")
+                {
+                    <td>Отказана</td>
+                }
+                else if (item.Status.Name == "Returned")
+                {
+                    <td>Върната</td>
+                }
+                <td>
+                    @if(item.Status.Name == "Awaiting")
+                    {
+                        <div>
+                            <a asp-page="/Orders/Edit" asp-route-id="@item.Id" class="btn btn-primary mb-1">Промени</a>
+                        </div>
+                        <div>
+                            <a asp-page="/Orders/Edit" asp-route-id="@item.Id" asp-route-status="Rejected" onclick="return Confirm()" class="btn btn-danger mb-1">Откажи</a>
+                        </div>
+                    }
+                    
+                    @if(User.IsInRole("Administrator") || User.IsInRole("OrdersManager"))
+                    {
+                        @if(item.Status.Name == "Awaiting")
+                        {
+                            <div>
+                                <a asp-page="/Orders/Edit" asp-route-id="@item.Id" asp-route-status="Sent" class="btn btn-warning mb-1">Изпрати</a>
+                            </div>
+                        }
+                        @if(item.Status.Name == "Sent")
+                        {
+                            <div>
+                                <a asp-page="/Orders/Edit" asp-route-id="@item.Id" asp-route-status="Delivered" class="btn btn-success mb-1">Доставена</a>
+                            </div>
+                        }
+                    }
+                </td>
+            </tr>
+        }
+
+
+    </tbody>
+</table>
+
+<script>
+    function Confirm() {
+        if (confirm("Желаете ли да откажете поръчката?")) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+</script>

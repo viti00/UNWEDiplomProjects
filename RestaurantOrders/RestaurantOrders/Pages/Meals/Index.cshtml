@@ -1,0 +1,178 @@
+﻿@page
+@model RestaurantOrders.Pages.Meals.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/MealsIndex.css" />
+    <link rel="stylesheet" href="~/css/AllPages.css" />
+
+}
+
+<div class="container menu">
+    <div class="row">
+        <div class="col-12 text-center mb-2">
+            <h1 class="display-4">Меню</h1>
+            <div class="row">
+                <div class="col-md-12">
+                    <form>
+                        <div class="row">
+                            <div class="col-md-4 mb-2">
+                                <div class="form-group text-center">
+                                    <input asp-for="Search" type="text" class="form-control" id="search" placeholder="Въведете търсене">
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <div class="form-group text-center">
+                                    <select asp-for="Sort" class="form-control" id="sort">
+                                        <option class="text-center" value="0" selected>Сортиране нормално</option>
+                                        <option class="text-center" value="1">Сортиране по цена от ниска към висока</option>
+                                        <option class="text-center" value="2">Сортиране по цена от висока към ниска</option>
+                                    </select>
+                                </div>
+                                <input hidden asp-for="Filter" value="@Model.Filter" />
+                                <input hidden asp-for="Search" value="@Model.Search" />
+                                <input hidden asp-for="Page" value="@Model.Page" />
+                                <input hidden asp-for="Type" value="@Model.Type" />
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <button class="btn btn-warning">Приложи</button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+            <hr />
+        </div>
+    </div>
+    <div class="row mb-4 text-center">
+        <div class="col-md-1 mb-2">
+            <a asp-route-filter="0" class="btn btn-warning">Салати</a>
+        </div>
+        <div class="col-md-1 mb-2">
+            <a asp-route-filter="1" class="btn btn-warning">Предястия</a>
+        </div>
+        <div class="col-md-1 mb-2">
+            <a asp-route-filter="2" class="btn btn-warning">Основни</a>
+        </div>
+        <div class="col-md-1 mb-2">
+            <a asp-route-filter="3" class="btn btn-warning">Десерти</a>
+        </div>
+        <div class="col-md-1 mb-2">
+            <a asp-route-filter="4" class="btn btn-warning">Напитки</a>
+        </div>
+        <div class="col-md-1 mb-2">
+            <a asp-route-filter="5" class="btn btn-warning">Алкохол</a>
+        </div>
+    </div>
+    @if (Model.Meal == null || Model.Meal.Count == 0)
+    {
+        <div class="text-center"><h5>Нямаме ястиата търсени от вас!</h5></div>
+    }
+    else
+    {
+
+        <div class="row">
+            @foreach (var item in Model.Meal)
+            {
+                <div class="col-md-4">
+                    <div class="card mb-3">
+                        <img class="card-img-top" src="@item.MealImgUrl" alt="Card image cap">
+                        <div class="card-body">
+                            <div class="text-center">
+                                <h5 class="card-title">@item.MealName</h5>
+                            </div>
+                            <div id="description-cont">
+                                <p class="card-text">@item.MealDescription</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="card-text">Цена: @item.MealPrice.ToString("f2") лв.</p>
+                            </div>
+                            @if (signInManager.IsSignedIn(User))
+                            {
+                                <div class="row text-center">
+                                    <div class="col-md-10 offset-md-1 col-sm-8 mb-2">
+                                        <input id="@item.Id" class="text-center" name="quantity" type="number" style="width: 100px;" />
+                                    </div>
+
+                                </div>
+                                <div class="row text-center mb-2">
+                                    <div class="col-md-10 offset-md-1 col-sm-10">
+                                        <button onclick="AddToBag('@item.Id')" class="btn-success btn">Добави към поръчка</button>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="text-center">
+                                    <h5>За да поръчате трябва да влезете в акаунта си!</h5>
+                                </div>
+
+                            }
+                            @if (User.IsInRole("Administrator"))
+                            {
+                                <div class="row text-center">
+                                    <div class="col-md-6">
+                                        <a asp-page="Edit" asp-route-id="@item.Id" class="btn btn-primary">Редактирай</a>
+                                    </div>
+                                    @if (item.IsInMenu == true)
+                                    {
+                                        <div class="col-md-6">
+                                            <a asp-page="Edit" asp-route-operation="remove" asp-route-id="@item.Id" onclick="return Confirm('Наистина ли искате да премахнете това ястие от менюто?');" class="btn btn-danger">Премахни</a>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="col-md-6">
+                                            <a asp-page="Edit" asp-route-operation="add" asp-route-id="@item.Id" onclick="return Confirm('Наистина ли искате да добавите това ястие в менюто?');" class="btn btn-success">Добави</a>
+                                        </div>
+                                    }
+
+
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="row">
+            <div class="col-12 text-center">
+                <a class="btn btn-warning mr-2 @(Model.Page == 1 ? "disabled" : string.Empty)"
+               asp-route-filter="@Model.Filter"
+               asp-route-sort="@Model.Sort"
+               asp-route-currPage="@(Model.Page - 1 < 1? 1: Model.Page - 1)"
+               asp-route-search="@Model.Search"
+               asp-route-type="@Model.Type"
+               >
+                    Предишна
+                </a>
+                <a class="btn btn-warning @(Model.Page == Model.LastPage ? "disabled" : string.Empty)"
+               asp-route-filter="@Model.Filter"
+               asp-route-sort="@Model.Sort"
+               asp-route-currPage="@(Model.Page + 1 > Model.LastPage? Model.LastPage:Model.Page + 1)"
+               asp-route-search="@Model.Search"
+               asp-route-type="@Model.Type"
+               >
+                    Следваща
+                </a>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts{
+    <script>
+        function Confirm(message) {
+            confirm(message)
+        }
+    </script>
+
+    <script src="/js/AddToBag.js"></script>
+    <script src="/js/GetBagCount.js"></script>
+}
+

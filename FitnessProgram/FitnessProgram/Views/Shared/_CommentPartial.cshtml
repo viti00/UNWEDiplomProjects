@@ -1,0 +1,39 @@
+﻿@using FitnessProgram.Data.Models
+@using Microsoft.AspNetCore.Identity
+
+@model CommentViewModel
+@inject SignInManager<User> SignInManager
+
+
+<div class="d-flex flex-start mb-4">
+    <img class="rounded-circle shadow-1-strong me-3"
+         src="@String.Format("data:image/gif;base64,{0}", Model.UserProfilePictire)" alt="" width="65"
+         height="65" />
+    <div class="card w-100">
+        <div class="card-body p-4">
+            @if (SignInManager.IsSignedIn(User) && User.GetId() == @Model.UserId || User.IsAdministrator() || User.IsInRole(ModeratorRoleName))
+            {
+                <div class="float-end">
+                    @if (!User.IsInRole(AdministratorRoleName) && !User.IsInRole(ModeratorRoleName))
+                    {
+                        <button onclick="OnEdit(@Model.Id)" class="fa fa-pencil btns" style="font-size:24px"></button>
+
+                    }
+                    <button onclick="Delete(@Model.Id)" data-id="@Model.Id" style="font-size:24px;color:red" class="fa fa-close btns"></button>
+                </div>
+            }
+            <div>
+                <h5>@Model.UserUsername</h5>
+                <p class="small">Posted on: @Model.CreatedOn</p>
+                <div comment-message-id="@Model.Id">
+                    @foreach (var p in Model.Message.Split("\n"))
+                    {
+                        <p>@p</p>
+                    }
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

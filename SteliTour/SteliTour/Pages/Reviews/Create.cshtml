@@ -1,0 +1,67 @@
+﻿@page
+@model SteliTour.Pages.Reviews.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+@section Styles{
+    <link rel="stylesheet" href="/css/FormPages.css" />
+    <link rel="stylesheet" href="~/css/BG.css" />
+    <link rel="stylesheet" href="~/css/StarRating.css" />
+}
+<div class="row bg-blue">
+    <div class="col-md-4 offset-md-0 form-wrapper">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="text-center text-dark">
+                <h5>Създаване на отзив</h5>
+            </div>
+            <div class="form-group text-center">
+                <label asp-for="Review.Rating" class="control-label">Оценка</label>
+                <div class="rating">
+                    <input class="star" type="radio" name="rating" value="5" id="5"><label for="5">☆</label>
+                    <input class="star" type="radio" name="rating" value="4" id="4"><label for="4">☆</label>
+                    <input class="star" type="radio" name="rating" value="3" id="3"><label for="3">☆</label>
+                    <input class="star" type="radio" name="rating" value="2" id="2"><label for="2">☆</label>
+                    <input class="star" type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
+                </div>
+                <input hidden id="input-rating" type="number" min="1" asp-for="Review.Rating" class="form-control" />
+                <div class="text-danger">
+                    @Html.ValidationMessage("StarRating")
+                </div>
+            </div>
+           
+            <div class="form-group" hidden>
+                <label asp-for="Review.UserId" class="control-label"></label>
+                <input asp-for="Review.UserId" class ="form-control" value="@ViewBag.UserId"/>
+            </div>
+            <div class="form-group text-center text-dark">
+                <label asp-for="Review.ReviewText" class="control-label">Отзив</label>
+                <textarea asp-for="Review.ReviewText" class="form-control" rows="7"></textarea>
+                <span asp-validation-for="Review.ReviewText" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Review.ReviewDate" class="control-label"></label>
+                <input asp-for="Review.ReviewDate" class="form-control" />
+                <span asp-validation-for="Review.ReviewDate" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Review.LastModified_19118105" class="control-label"></label>
+                <input asp-for="Review.LastModified_19118105" class="form-control" />
+                <span asp-validation-for="Review.LastModified_19118105" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center mb-2 mt-2">
+                <input type="submit" value="Изпрати отзив" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="/js/StarRating.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+}

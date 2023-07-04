@@ -1,0 +1,48 @@
+﻿@page
+@model FishermanMarket.Pages.Requests.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+@section Styles{
+    <link rel="stylesheet" href="~/css/BodyColor.css" />
+}
+
+<div class="row">
+    <div class="col-md-4 offset-md-4" style="background-color: mediumseagreen;border-radius: 10px;">
+        <form method="post">
+            <div class="text-center">
+                <h5>Редактиране на запитване</h5>
+            </div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Request.Id" />
+            <div class="form-group">
+                <label asp-for="Request.Description" class="control-label">Вашето запитване</label>
+                <textarea asp-for="Request.Description" rows="6" class="form-control"></textarea>
+                <span asp-validation-for="Request.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Request.UserId" class="control-label"></label>
+                <input asp-for="Request.UserId" class="form-control" value="@ViewBag.UserId"/>
+                <span asp-validation-for="Request.UserId" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Request.Status" class="control-label"></label>
+                <input asp-for="Request.Status" class="form-control" />
+                <span asp-validation-for="Request.Status" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Request.RequestDate" class="control-label"></label>
+                <input asp-for="Request.RequestDate" class="form-control" />
+                <span asp-validation-for="Request.RequestDate" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center mt-3 mb-3">
+                <input style="background-color: yellowgreen; color: black" type="submit" value="Запази промените" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

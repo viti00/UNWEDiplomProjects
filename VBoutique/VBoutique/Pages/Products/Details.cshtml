@@ -1,0 +1,101 @@
+﻿@page
+@model VBoutique.Pages.Products.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+@section Styles{
+
+    <link rel="stylesheet" href="/css/ProductDetails.css" />
+}
+
+<div class="container" >
+    <div class="card" style="background-color: #fa9cc3; border-radius:5px; border: 1px solid black">
+        <div class="container-fliud">
+            <div class="wrapper row">
+                <div class="preview col-md-6">
+
+                    <div class="preview-pic tab-content">
+                        <div class="tab-pane active" id="pic-1"><img src="@Model.Product.ImageUrl" /></div>
+                    </div>
+
+                </div>
+                <div class="details col-md-6">
+                    <h3 class="product-title">@Model.Product.Make - @Model.Product.Model</h3>
+                    <div class="col-md-12 mb-2 mt-2">
+                        <div style="height: 250px; overflow: auto; padding: 10px; border: 1px solid black; border-radius: 5px;">
+                            <p class="product-description">@Model.Product.ProductDescription</p>
+                        </div>
+                       
+                        <h4 class="price" style="color: black !important">Цена: <span>@Model.Product.Price.ToString("f2") лв.</span></h4>
+                        <h5 class="colors">
+                            Цвят:
+                            <span class="color" style="background-color: @Model.Color.ColorNameEn.ToLower()"></span>
+                        </h5>
+                            <form asp-page="/ShoppingCarts/AddToCart" asp-route-productId="@Model.Product.Id">
+                                @if (Model.Type == "Shoes")
+                                {
+                                    <h5 class="sizes">
+                                        Налични размери:
+                                        <select name="size" for="size">
+                                            @foreach (var item in Model.Sizes)
+                                            {
+                                                <option value="@item.Size.Value">№ @item.Size.Value</option>
+                                            }
+                                        </select>
+                                    </h5>
+                                }
+                                @if (signInManager.IsSignedIn(User))
+                                {
+                                    <div class="row text-center mb-3">
+                                        <div class="col-md-6 offset-md-3">
+                                            <label class="price">Брой: </label>
+                                        </div>
+                                        <div class="col-md-6 offset-md-3">
+                                            <input style="text-align: right" name="count" for="count" type="number" min="1" />
+
+                                        </div>
+                                    </div>
+
+                                    <div class="action text-center">
+                                        <button class="add-to-cart btn btn-default" type="submit">Добави в количка</button>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <h5 class="text-center">За да поръвате трябва да сте влезли в акаунта си</h5>
+                                }
+                                
+                            </form>
+                            @if(User.IsInRole("Admin") || User.IsInRole("ProductsManager"))
+                            {
+                                <div class="row">
+                                    <div>
+                                        <a asp-page="@(Model.Type == "Bags"?"/Bags/Edit":"/Shoes/Edit")" asp-route-id="@Model.Product.Id" class="btn btn-primary">Редактирай</a>
+                                    <a asp-page="@(Model.Type == "Bags"?"/Bags/Edit":"/Shoes/Edit")" asp-page-handler="DeleteProduct" asp-route-id="@Model.Product.Id" onclick="return Confirm();" class="btn btn-danger">Изтрий</a>
+                                    </div>
+                                </div>
+                            }
+                          
+                    </div>
+                </div>
+                
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        function Confirm() {
+            if (confirm("Желаете ли да премахнете този продукт?")) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    </script>
+}

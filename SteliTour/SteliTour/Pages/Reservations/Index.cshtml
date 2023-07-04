@@ -1,0 +1,199 @@
+﻿@page
+@model SteliTour.Pages.Reservations.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+@{
+    var prevPage = Model.CurrentPage - 1;
+    if (prevPage < 1)
+    {
+        prevPage = 1;
+    }
+    var nextPage = Model.CurrentPage + 1;
+    if (nextPage > Model.EndPage)
+    {
+        nextPage = Model.EndPage;
+    }
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/BG.css" />
+    <link rel="stylesheet" href="~/css/popup.css" />
+    <link rel="stylesheet" href="~/css/DestinationIndex.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+}
+
+<div class="row">
+
+    <div class="row mt-3">
+        <form>
+            <div class="row">
+                <div class="col-md-4 offset-2">
+                    <div class="form-group text-center">
+                        <label asp-for="Filter" for="search">Филтриране:</label>
+                        <select asp-for="Filter" class="form-control" asp-items="ViewBag.Destinations"><option value="all">----------</option></select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group text-center">
+                        <label asp-for="Sort" for="sort">Сортиране:</label>
+                        <select asp-for="Sort" class="form-control" id="sort">
+                            <option value="0" selected>----------</option>
+                            <option value="1">Дата: от близка към далечна</option>
+                            <option value="2">Дата: от далечна към близка</option>
+                        </select>
+                    </div>
+                    <input hidden asp-for="CurrentPage" value="@Model.CurrentPage" />
+                    <input hidden asp-for="Type" value="@Model.Type" />
+                </div>
+                
+            </div>
+            <div class="col-md-12 mt-2 mb-2 text-center">
+                <button class="btn btn-primary">Приложи</button>
+            </div>
+        </form>
+        @if (User.IsInRole("Worker") || (User.IsInRole("Admin")))
+        {
+            <div class="text-center">
+                <form asp-page-handler="Export" asp-route-filter="@Model.Filter" asp-route-sort="@Model.Sort">
+                    <button class="btn btn-success">Итегли данни</button>
+                </form>
+            </div>
+        }
+    </div>
+
+</div>
+@if (Model.Reservation == null || Model.Reservation.Count < 1)
+{
+    <div class="text-center">
+        <h3 class="text-dark">Няма резервации по зададените критерии</h3>
+    </div>
+}
+else
+{
+    <div class="container container-scroll">
+        <div class="row">
+            @foreach (var post in Model.Reservation)
+            {
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <img src="@post.Destination.ImageUrl" class="card-img-top h-50" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">@post.Destination.Name</h5>
+                            <h6 class="text-center">@post.Destination.StartDate.ToString("dd.MM.yyyy") - @post.Destination.EndDate.ToString("dd.MM.yyyy")</h6>
+                            <h6 class="text-center">Направена от: @(post.FirstName + " " + post.LastName + " " + post.EGN)</h6>
+                            <h6 class="text-center">Телефон за контакт: @post.PhoneNumber</h6>
+                            <h6 class="text-center">Брой възрастни: @post.AdultCount</h6>
+                            <h6 class="text-center">Брой деца: @post.KidsCount</h6>
+                            <h6 class="text-center">Брой деца под 2 години: @post.Under2YearsKidsCount</h6>
+                            <h6 class="text-center">Платени до момента: <span id="payed" data-id="@post.Id">@post.Payed</span> лв.</h6>
+                            <h6 class="text-center">Оставащи за плащане: <span id="remaining" data-id="@post.Id">@post.Remainign</span> лв.</h6>
+
+                            @if (!User.IsInRole("Worker") && !User.IsInRole("Admin") && post.Status == "A")
+                            {
+                                <div class="d-flex justify-content-between mb-2">
+                                    @if (post.Remainign > 0)
+                                    {
+                                        <div>
+                                            <a id="pay" data-id="@post.Id" class="btn btn-primary">
+                                                Плащане
+                                            </a>
+                                        </div>
+                                    }
+                                    <div>
+                                        <a asp-page="Edit" asp-route-id="@post.Id" class="btn btn-success">
+                                            Промени
+                                        </a>
+                                    </div>
+                                    @if (post.Status == "A")
+                                    {
+                                        <div>
+                                            <a asp-page="/Reservations/Edit" asp-route-handler="Delete" onclick="return Confirm();" asp-route-id="@post.Id" class="btn btn-danger">
+                                                Откажи
+                                            </a>
+                                        </div>
+                                    }
+                                </div>
+                            }
+
+                            @if (post.Remainign > 0 && (User.IsInRole("Worker") || User.IsInRole("Admin")))
+                            {
+                                <div>
+                                    <div>
+                                        <div class="col-md-4 offset-md-4 text-center mb-1">
+                                            <input id="new-sum" class="form-control" min="1" type="number" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 text-center">
+                                            <a onclick="Change('@post.Id')" class="btn btn-success">
+                                                Добави сума към платени
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+            @if (Model.Type == "my")
+            {
+                <div class="text-center">
+                    <div class="pagination mb-4">
+                        <a title="Предишна" class="@(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
+                   asp-page="/Reservations/Index"
+                   asp-route-currPage="@prevPage"
+                   asp-route-type="@Model.Type"
+                   asp-route-filter="@Model.Filter"
+                   asp-route-sort="@Model.Sort">
+                            <i id="left-plane" class="fa fa-plane fa-3x"></i>
+                        </a>
+                        <span class="pagination-info">Страница @Model.CurrentPage от @Model.EndPage</span>
+                        <a title="Следваща" class="@(Model.CurrentPage == Model.EndPage ? " disabled" : string.Empty)"
+                   asp-page="/Reservations/Index"
+                   asp-route-currPage="@nextPage"
+                   asp-route-type="@Model.Type"
+                   asp-route-filter="@Model.Filter"
+                   asp-route-sort="@Model.Sort">
+                            <i class="fa fa-plane fa-3x" style="transform: rotate(45deg)"></i>
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="modal fade" id="reservationModal" tabindex="-1" role="dialog" aria-labelledby="reservationModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reservationModalLabel">Въведете сумата, която искате да заплатите</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group text-center mb-2">
+                        <input type="number" class="form-control" id="amountInput" name="amount" required>
+                    </div>
+                    <div class="text-center">
+                        <button id="send" type="submit" class="btn btn-primary">Плащане</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts{
+    <script>
+        function Confirm() {
+            return confirm("Сигурни ли сте, че искате да откажете резервацията");
+        }
+    </script>
+
+    <script src="/js/ChangeSum.js"></script>
+    <script src="/js/Pay.js"></script>
+}

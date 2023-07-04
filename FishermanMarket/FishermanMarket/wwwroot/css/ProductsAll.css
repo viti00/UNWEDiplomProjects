@@ -1,0 +1,35 @@
+﻿.product-box {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.product-img img {
+    max-width: 100%;
+    max-height: 200px;
+    margin-bottom: 10px;
+}
+
+.product-info h4 {
+    margin-bottom: 5px;
+}
+
+.product-info p {
+    font-weight: bold;
+}
+.product-info h4, .product-info p {
+    text-decoration: none;
+    color: black;
+}
+a {
+    text-decoration: none;
+}
+
+.product-box {
+    background-color: yellowgreen;
+    border-radius: 10px;
+}
+    .product-box:hover {
+        transform: scale(1.1);
+    }

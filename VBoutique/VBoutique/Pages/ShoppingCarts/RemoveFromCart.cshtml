@@ -1,0 +1,81 @@
+﻿@page
+@model VBoutique.Pages.ShoppingCarts.RemoveFromCartModel
+
+@{
+    ViewData["Title"] = "RemoveFromCart";
+}
+
+<h1>RemoveFromCart</h1>
+
+<h4>ShoppingCartItems</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ShoppingCartItems.Id" class="control-label"></label>
+                <input asp-for="ShoppingCartItems.Id" class="form-control" />
+                <span asp-validation-for="ShoppingCartItems.Id" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="ShoppingCartItems.CartId" />
+            <input type="hidden" asp-for="ShoppingCartItems.ProductId" />
+            <div class="form-group">
+                <label asp-for="ShoppingCartItems.ProductCount" class="control-label"></label>
+                <input asp-for="ShoppingCartItems.ProductCount" class="form-control" />
+                <span asp-validation-for="ShoppingCartItems.ProductCount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShoppingCartItems.Size35Count" class="control-label"></label>
+                <input asp-for="ShoppingCartItems.Size35Count" class="form-control" />
+                <span asp-validation-for="ShoppingCartItems.Size35Count" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShoppingCartItems.Size36Count" class="control-label"></label>
+                <input asp-for="ShoppingCartItems.Size36Count" class="form-control" />
+                <span asp-validation-for="ShoppingCartItems.Size36Count" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShoppingCartItems.Size37Count" class="control-label"></label>
+                <input asp-for="ShoppingCartItems.Size37Count" class="form-control" />
+                <span asp-validation-for="ShoppingCartItems.Size37Count" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShoppingCartItems.Size38Count" class="control-label"></label>
+                <input asp-for="ShoppingCartItems.Size38Count" class="form-control" />
+                <span asp-validation-for="ShoppingCartItems.Size38Count" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShoppingCartItems.Size39Count" class="control-label"></label>
+                <input asp-for="ShoppingCartItems.Size39Count" class="form-control" />
+                <span asp-validation-for="ShoppingCartItems.Size39Count" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShoppingCartItems.Size40Count" class="control-label"></label>
+                <input asp-for="ShoppingCartItems.Size40Count" class="form-control" />
+                <span asp-validation-for="ShoppingCartItems.Size40Count" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShoppingCartItems.Size41Count" class="control-label"></label>
+                <input asp-for="ShoppingCartItems.Size41Count" class="form-control" />
+                <span asp-validation-for="ShoppingCartItems.Size41Count" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShoppingCartItems.LastModified_19118155" class="control-label"></label>
+                <input asp-for="ShoppingCartItems.LastModified_19118155" class="form-control" />
+                <span asp-validation-for="ShoppingCartItems.LastModified_19118155" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

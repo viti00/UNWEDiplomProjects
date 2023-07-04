@@ -1,0 +1,147 @@
+﻿@page
+@using System.Security.Claims
+@model HomeEssentials.Pages.Reviews.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@{
+    var index = 0;
+}
+
+@section Styles{
+    <style>
+        .gradient-custom {
+            background-color: cyan;
+        }
+
+        .carousel-indicators {
+            border-radius: 50%;
+            width: 10px;
+            height: 10px;
+        }
+    </style>
+}
+
+<div class="row">
+    <div class="col-md-6 offset-md-5">
+        @if (signInManager.IsSignedIn(User) && @Model.ItemId.ToString() != "00000000-0000-0000-0000-000000000000")
+        {
+            <a asp-page="/Reviews/Create" asp-route-id="@Model.ItemId" class="btn btn-warning">Дайте мнение за този продукт</a>
+        }
+        else if (!signInManager.IsSignedIn(User) && @Model.ItemId.ToString() != "00000000-0000-0000-0000-000000000000")
+        {
+            <div class="text-center">
+                <h6>Трябва да сте влезли за да дадете мнение!</h6>
+            </div>
+        }
+    </div>
+</div>
+@if(Model.Review == null || Model.Review.Count < 1)
+{
+    <div class="text-center">
+        <h4>Все още няма мнения</h4>
+    </div>
+}
+else
+{
+    
+
+<section class="gradient-custom">
+    <div class="container my-5 py-5">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-12">
+                <div class="text-center mb-4 pb-2">
+                    <i class="fa fa-quote-left fa-3x text-dark"></i>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body px-4 py-5">
+                    <div id="carouselDarkVariant" class="carousel slide carousel-dark" data-mdb-ride="carousel">
+
+                        <div class="carousel-inner pb-5 text-center">
+                            @foreach (var item in Model.Review)
+                            {
+                                <div data-index="@index" class="carousel-item @(index == 0? "active": string.Empty)">
+                                    <div class="row">
+                                        <div class="text-center">
+                                            <h6>@item.Item.Name</h6>
+                                            <hr/>
+                                        </div>
+                                        <div class="col-md-9 offset-md-1">
+                                            <a asp-page="/Items/Details" asp-route-id="@item.ItemId" class="btn btn-success">Към продукта</a>
+                                                
+
+                                                @if ((signInManager.IsSignedIn(User) && (User.FindFirstValue(ClaimTypes.NameIdentifier) == item.UserId)) || User.IsInRole("Administrator"))
+                                                {
+                                                    <a asp-page="/Reviews/Edit" asp-route-id="@item.Id" class="btn btn-primary">Редактирай</a>
+                                                    <a asp-page="/Reviews/Edit" asp-page-handler="Delete" asp-route-id="@item.Id" onclick="return Confirm();" class="btn btn-danger">Изтрий</a>
+                                                }
+                                        </div>
+                                    </div>
+                                    <hr/>
+                                    <div class="row d-flex justify-content-center">
+                                        <div class="col-md-12 offset-md-3 col-lg-10 col-xl-8">
+                                            <div class="row">
+                                                <div class="col-9 col-md-9 col-lg-7 col-xl-8 text-center text-lg-start mx-auto mx-lg-0">
+                                                    <div class="text-center">
+                                                        <h4 class="mb-4">@item.Title</h4>
+                                                    </div>
+                                                    <div class="text-center text-muted">
+                                                        <p>Направен на: @item.CreatedDate</p>
+                                                        <p>Последна промяна на: @item.LastModified_19118075</p>
+                                                    </div>
+
+                                                    <div class="mb-0 pb-3 text-center" style="width: 100%; height: 200px; overflow: auto; padding: 5px;border-radius: 5px; border: 1px solid black; ">
+                                                        @foreach (var p in @item.Text.Split("/n"))
+                                                        {
+                                                            <p>@p</p>
+                                                            <br />
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                index++;
+                            }
+
+                            <button hidden class="carousel-control-prev" type="button" data-mdb-target="#carouselDarkVariant"
+                                    data-mdb-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Назад</span>
+                            </button>
+                            <button @(Model.Review.Count <= 1? "hidden":string.Empty) class="carousel-control-next" type="button" data-mdb-target="#carouselDarkVariant"
+                                    data-mdb-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Напред</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-4 pt-2">
+                    <i class="fa fa-quote-right fa-3x text-dark"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+}
+
+@section Scripts{
+    <script src="/js/reviews.js"></script>
+
+    <script>
+        function Confirm() {
+            if (confirm("Желаете ли да изтриете мнението?")) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    </script>
+}

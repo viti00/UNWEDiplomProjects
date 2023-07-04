@@ -1,0 +1,106 @@
+﻿@page
+@model RestaurantOrders.Pages.Bags.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+@section Styles{
+    <style>
+        .disabled {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+    </style>
+}
+
+<section class="pt-5 pb-5">
+    <div class="container">
+        <div class="row w-100">
+            <div class="col-lg-12 col-md-12 col-12">
+                <h3 class="display-5 mb-2 text-center">Вашата торбичка</h3>
+                @if(Model.Bag == null || Model.Bag.Meals.Count < 1)
+                {
+                    <div class="text-center">
+                        <h4>Вашата торбичка е празна</h4>
+                    </div>
+                }
+                else
+                {
+                    <table id="shoppingCart" class="table table-condensed table-responsive">
+                        <thead>
+                            <tr>
+                                <th style="width:60%">Продукт</th>
+                                <th style="width:12%">Цена</th>
+                                <th style="width:10%">Брой</th>
+                                <th style="width:16%"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Bag.Meals)
+                            {
+                                <tr style="border-bottom: 1px solid black">
+                                    <td data-th="Product">
+                                        <div class="row">
+                                            <div class="col-md-3 text-left">
+                                                <img src="@item.Meal.MealImgUrl" alt="" class="img-fluid d-none d-md-block rounded mb-2 shadow ">
+                                            </div>
+                                            <div class="col-md-9 text-left mt-sm-2">
+                                                <h4>@item.Meal.MealName</h4>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td data-th="Price">@item.Meal.MealPrice.ToString("f2") лв.</td>
+                                    <td data-th="Quantity" class="@(Model.Type == "ordered"? "disabled":"")">
+                                        <input data-id="@item.MealId" type="number" class="form-control form-control-lg text-center quantity" value="@item.Quantity">
+                                    </td>
+                                    @if(Model.Type != "ordered")
+                                    {
+                                        <td class="actions" data-th="">
+                                            <div class="text-right">
+                                                <button onclick="Remove('@item.Meal.Id')" class="btn btn-white border-secondary bg-white btn-md mb-2">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    }
+                                    
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <div class="float-right text-right">
+                        <h4>Всичко общо:</h4>
+                        <h1 id="total">@(Model.Bag.Meals.Sum(x => x.Quantity * x.Meal.MealPrice).ToString("f2")) лв.</h1>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="row mt-4 d-flex align-items-center">
+            @if(Model.Type != "ordered")
+            {
+                @if (Model.Bag != null && Model.Bag.Meals.Count > 0)
+                {
+                    <div class="col-sm-6 order-md-2 text-right">
+                        <a asp-page="/Orders/Create" class="btn btn-primary mb-4 btn-lg pl-5 pr-5">Направи поръчка</a>
+                    </div>
+                }
+
+                <div class="col-sm-6 mb-3 mb-m-1 order-md-1 text-md-left">
+                    <a asp-page="/Meals/Index">
+                        <i class="fas fa-arrow-left mr-2"></i> Обратно към менюто
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+@section Scripts{
+    <script src="/js/GetBagCount.js"></script>
+    <script src="/js/OnChange.js"></script>
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    
+}

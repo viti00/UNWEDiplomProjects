@@ -1,0 +1,59 @@
+﻿@page
+@model PartsShop.Pages.Parts.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1 class="text-center">Редактиране на част</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Part.Id" />
+            <div class="form-group">
+                <label asp-for="Part.CategoryId" class="control-label">Категория</label>
+                <select asp-for="Part.CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                <span asp-validation-for="Part.CategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Part.PartName" class="control-label">Част</label>
+                <input asp-for="Part.PartName" class="form-control" />
+                <span asp-validation-for="Part.PartName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Part.PartDescription" class="control-label">Описание на частта</label>
+                <textarea asp-for="Part.PartDescription" class="form-control" rows="5"></textarea>
+                <span asp-validation-for="Part.PartDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Part.ImageUrl" class="control-label">Снимка</label>
+                <input asp-for="Part.ImageUrl" class="form-control" />
+                <span asp-validation-for="Part.ImageUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Part.PartPrice" class="control-label">Цена</label>
+                <input asp-for="Part.PartPrice" class="form-control" style="text-align: right"/>
+                <span asp-validation-for="Part.PartPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Part.DateOfAdd" class="control-label"></label>
+                <input asp-for="Part.DateOfAdd" class="form-control" />
+                <span asp-validation-for="Part.DateOfAdd" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Part.LastModified_19118073" class="control-label"></label>
+                <input asp-for="Part.LastModified_19118073" class="form-control" />
+                <span asp-validation-for="Part.LastModified_19118073" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center mb-3 mt-3">
+                <input type="submit" value="Редактирай" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

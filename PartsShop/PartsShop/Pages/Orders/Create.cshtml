@@ -1,0 +1,58 @@
+﻿@page
+@model PartsShop.Pages.Orders.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1 class="text-center">Данни за поръчка</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4  offset-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Order.FName" class="control-label">Име</label>
+                <input asp-for="Order.FName" class="form-control" />
+                <span asp-validation-for="Order.FName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Order.LName" class="control-label">Фамилия</label>
+                <input asp-for="Order.LName" class="form-control" />
+                <span asp-validation-for="Order.LName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Order.Phone" class="control-label">Телефон</label>
+                <input asp-for="Order.Phone" class="form-control" />
+                <span asp-validation-for="Order.Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Order.Addres" class="control-label">Адрес за доставка</label>
+                <input asp-for="Order.Addres" class="form-control" />
+                <span asp-validation-for="Order.Addres" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Order.CartId" class="control-label"></label>
+                <input asp-for="Order.CartId" class="form-control" value="@ViewBag.CartId" />
+                <span asp-validation-for="Order.CartId" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Order.UserId" class="control-label"></label>
+                <input asp-for="Order.UserId" class ="form-control" value="@ViewBag.UserId"/>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Order.LastModified_19118073" class="control-label"></label>
+                <input asp-for="Order.LastModified_19118073" class="form-control" />
+                <span asp-validation-for="Order.LastModified_19118073" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center mb-3 mt-3">
+                <input type="submit" value="Поръчай" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
