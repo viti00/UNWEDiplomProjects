@@ -1,0 +1,97 @@
+﻿@page
+@model FoodAdditivesShop.Pages.Carts.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+@section Styles{
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+}
+
+
+<div class="container padding-bottom-3x mb-1">
+    <div class="table-responsive shopping-cart">
+        @if(Model.Cart != null && Model.Cart.CartProducts.Count > 0)
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="text-light">Продукт</th>
+                        <th class="text-light">Брой</th>
+                        <th class="text-center text-light">Ед. Цена</th>
+                        @if (Model.Cart.IsOrdered == false)
+                        {
+                            <th class="text-center text-light"><a class="btn btn-sm btn-outline-danger" asp-page="/Carts/Edit" asp-page-handler="RemoveAll" onclick="return Confirm('Желаете ли да изпразните количката');" asp-route-cartId="@Model.Cart.Id">Махни всички</a></th>
+
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var product in Model.Cart.CartProducts)
+                    {
+                        <tr>
+                            <td>
+                                <div class="product-item">
+                                    <img style="max-width: 70px;" src="@product.Product.ProductImageUrl" alt="@product.Product.ProductName">
+                                    <div class="product-info">
+                                        <h5 class="product-title"><a style="color: white;" asp-page="/Products/Details" asp-route-id="@product.Product.Id">@product.Product.ProductName - @product.Product.ProductMake</a></h5>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="count-input" style="display: flex; flex-direction: row;">
+                                    <h6 class="text-light">@product.ProductCount</h6>
+                                </div>
+                            </td>
+                            <td class="text-center text-lg text-medium text-light">@product.Product.ProductPrice лв.</td>
+                            @if(Model.Cart.IsOrdered == false)
+                            {
+                                <td class="text-center text-light"><a class="remove-from-cart" asp-page="/Carts/Edit" asp-page-handler="RemovePart" asp-route-productId="@product.Product.Id" asp-route-cartId="@Model.Cart.Id" onclick="return Confirm('Желаете ли да премахнете този продукт от количката');" title="Премахни"><i style="color: red" class="fa fa-trash"></i></a></td>
+
+                            }
+                        </tr>
+                    }
+                    
+
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <h5 class="text-center text-light">Количката е празна</h5>
+        }
+
+    </div>
+    @if (Model.Cart != null && Model.Cart.CartProducts.Count > 0)
+    {
+        <div class="shopping-cart-footer">
+            <div class="column text-lg text-light">Общо: <span class="text-medium">@(Model.Cart.CartProducts.Sum(x => x.ProductCount * x.Product.ProductPrice)) лв.</span></div>
+        </div>
+    }
+   
+    <div class="shopping-cart-footer">
+        @if (Model.Cart != null && Model.Cart.CartProducts.Count > 0 && Model.Cart.IsOrdered == false)
+        {
+            <div class="column mt-2 mb-3"><a class="btn btn-success" asp-page="/Orders/Create">Направи поръчка</a></div>
+
+        }
+        <div class="column"><a class="btn btn-outline-secondary" asp-page="/Products/Index">Продължи да пазаруваш</a></div>
+        
+    </div>
+</div>
+
+
+@section Scripts{
+    <script>
+        function Confirm(message) {
+            if (confirm(message)) {
+                return true;
+
+            }
+            else {
+                return false;
+            }
+        }
+    </script>
+}

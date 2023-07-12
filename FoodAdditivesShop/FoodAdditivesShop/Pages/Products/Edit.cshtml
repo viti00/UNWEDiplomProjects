@@ -1,0 +1,61 @@
+﻿@page
+@model FoodAdditivesShop.Pages.Products.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1 class="text-center text-light">Редактиране на продукт</h1>
+<hr style="color: white !important" />
+<div class="row">
+    <div class="col-md-4 offset-md-4" style="border-radius: 5px; border: 1px solid grey; padding: 15px;">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Product.Id" />
+            <div class="form-group">
+                <label asp-for="Product.ProductName" class="control-label text-light">Име на продукт</label>
+                <input asp-for="Product.ProductName" class="form-control" />
+                <span asp-validation-for="Product.ProductName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.ProductMake" class="control-label text-light">Марка</label>
+                <input asp-for="Product.ProductMake" class="form-control" />
+                <span asp-validation-for="Product.ProductMake" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.ProductDescription" class="control-label text-light">Описание на продукта</label>
+                <textarea asp-for="Product.ProductDescription" class="form-control" rows="5"></textarea>
+                <span asp-validation-for="Product.ProductDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.ProductImageUrl" class="control-label text-light">Снимка</label>
+                <input asp-for="Product.ProductImageUrl" class="form-control" />
+                <span asp-validation-for="Product.ProductImageUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.ProductPrice" class="control-label text-light">Цена(лв)</label>
+                <input asp-for="Product.ProductPrice" class="form-control" style="text-align: right" />
+                <span asp-validation-for="Product.ProductPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Product.DateOfAdd" class="control-label"></label>
+                <input asp-for="Product.DateOfAdd" class="form-control" />
+                <span asp-validation-for="Product.DateOfAdd" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Product.LastModified_19118119" class="control-label"></label>
+                <input asp-for="Product.LastModified_19118119" class="form-control" />
+                <span asp-validation-for="Product.LastModified_19118119" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center mb-3 mt-3">
+                <input type="submit" value="Редактирай" class="btn" style="background-color: yellow; color: black;" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,114 @@
+﻿@page
+@model FoodAdditivesShop.Pages.Orders.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+@section Styles{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+}
+
+@if (Model.Order != null && Model.Order.Count > 0)
+{
+    @if (User.IsInRole("Admin") || User.IsInRole("OrdersManager"))
+    {
+        <div class="row mb-5 mt-5">
+            <div class="col-md-4 offset-md-5">
+                <a asp-page="/Orders/Export" asp-page-handler="Export" class="btn btn-success">Изтегли данни</a>
+            </div>
+        </div>
+    }
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="text-light text-center">
+                    Име
+                </th>
+                <th class="text-light text-center">
+                    Фамилия
+                </th>
+                <th class="text-light text-center">
+                    Адрес
+                </th>
+                <th class="text-light text-center">
+                    Телефон
+                </th>
+                <th class="text-light text-center">
+                    Количка
+                </th>
+                <th class="text-light text-center">
+                    Статус
+                </th>
+                <th class="text-light text-center">
+                    Последна промяна
+                </th>
+                <th class="text-light text-center"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Order)
+            {
+                <tr>
+                    <td class="text-light text-center">
+                        @Html.DisplayFor(modelItem => item.FName)
+                    </td>
+                    <td class="text-light text-center">
+                        @Html.DisplayFor(modelItem => item.LName)
+                    </td>
+                    <td class="text-light text-center">
+                        @Html.DisplayFor(modelItem => item.Addres)
+                    </td>
+                    <td class="text-light text-center">
+                        @Html.DisplayFor(modelItem => item.Phone)
+                    </td>
+                    <td class="text-center">
+                        <a title="Виж поръчка" style="color: green" asp-page="/Carts/Details" asp-route-cartId="@item.CartId"><i style="font-size:36px" class="fa fa-search"></i></a>
+                    </td>
+                    <td class="text-light text-center">
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td class="text-light text-center">
+                        @Html.DisplayFor(modelItem => item.LastModified_19118119)
+                    </td>
+                    @if(!User.IsInRole("Admin") && !User.IsInRole("OrdersManager") && item.Status != "Изпратена")
+                    {
+                        <td class="text-center">
+                            <a title="Редактирай" asp-page="./Edit" asp-route-id="@item.Id"><i style="font-size:36px" class="fa fa-edit"></i></a> |
+                            <a asp-page="./Edit" title="Откажи" asp-page-handler="Delete" style="color: red" asp-route-id="@item.Id" onclick="return Confirm('Искате ли да откажете тази поръчка?');"><i style="font-size:36px" class="fa fa-trash-o"></i></a>
+                        </td>
+                    }
+                    else if ((User.IsInRole("Admin") || User.IsInRole("OrdersManager")) && item.Status != "Изпратена")
+                    {
+                        <td class="text-center">
+                            <a asp-page="./Edit" asp-page-handler="ChangeStatus" title="Изпрати поръчка" style="color: green" asp-route-id="@item.Id" onclick="return Confirm('Искате ли да промените статуса на тази поръчка?');"><i class='fas fa-shipping-fast' style='font-size:36px'></i></a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h5 class="text-center text-light">Няма поръчки</h5>
+}
+
+@section Scripts{
+    <script>
+        function Confirm(message) {
+            if (confirm(message)) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    </script>
+}
