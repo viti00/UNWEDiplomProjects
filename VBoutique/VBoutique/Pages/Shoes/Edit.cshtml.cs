@@ -162,32 +162,32 @@ namespace VBoutique.Pages.Shoes
                 sizes.FirstOrDefault(x => x.Size.Value == "35").AvailableCount = Size35Count;
                 updatedCount++;
             }
-            else if (last36Count != Size36Count)
+            if (last36Count != Size36Count)
             {
                 sizes.FirstOrDefault(x => x.Size.Value == "36").AvailableCount = Size36Count;
                 updatedCount++;
             }
-            else if (last37Count != Size37Count)
+            if (last37Count != Size37Count)
             {
                 sizes.FirstOrDefault(x => x.Size.Value == "37").AvailableCount = Size37Count;
                 updatedCount++;
             }
-            else if (last38Count != Size38Count)
+            if (last38Count != Size38Count)
             {
                 sizes.FirstOrDefault(x => x.Size.Value == "38").AvailableCount = Size38Count;
                 updatedCount++;
             }
-            else if (last39Count != Size39Count)
+            if (last39Count != Size39Count)
             {
                 sizes.FirstOrDefault(x => x.Size.Value == "39").AvailableCount = Size39Count;
                 updatedCount++;
             }
-            else if (last40Count != Size40Count)
+            if (last40Count != Size40Count)
             {
                 sizes.FirstOrDefault(x => x.Size.Value == "40").AvailableCount = Size40Count;
                 updatedCount++;
             }
-            else if (last41Count != Size41Count)
+            if (last41Count != Size41Count)
             {
                 sizes.FirstOrDefault(x => x.Size.Value == "41").AvailableCount = Size41Count;
                 updatedCount++;
